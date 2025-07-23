@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto">
     <h1 class="text-3xl mt-8 mb-4 font-extrabold">Create Mentor</h1>
 
-    <form [formGroup]="createPostForm">
+    <form [formGroup]="createPostForm" (ngSubmit)="onFormSubmit()">
         <div class="grid grid-cols-2 gap-4">
             <div class="">
                 <label for="title" class="w-full">Firt Name</label>
@@ -18,7 +18,7 @@
         <div class="grid grid-cols-2 gap-4 mt-5">
             <div class="">
                 <label for="title" class="w-full">Program</label>
-                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2" placeholder="Enter First Name"
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2" placeholder="Enter Program Name"
                     autocomplete="off" formControlName="program">
             </div>
             <div class="">

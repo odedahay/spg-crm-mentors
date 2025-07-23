@@ -17,4 +17,8 @@ export class CreatePostComponent {
     note: new FormControl<string>('', { nonNullable: false}),
     status: new FormControl<string>('', {nonNullable: true})
   });
+
+  onFormSubmit(){
+    console.log(this.createPostForm.value);
+  }
 }
