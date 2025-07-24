@@ -1,51 +1,117 @@
 <div class="max-w-7xl mx-auto">
-    <h1 class="text-3xl mt-8 mb-4 font-extrabold">Create Mentor</h1>
+    <div class="flex items-center justify-between my-8 ">
+        <h1 class="text-4xl font-bold">Create Mentor</h1>
+        <a [routerLink]="['/']" class="flex items-center text-indigo-500">
+            <span class="material-symbols-outlined">
+            chevron_backward
+            </span> Back to Dashboard</a>
+    </div>
+    
 
     <form [formGroup]="createPostForm" (ngSubmit)="onFormSubmit()">
         <div class="grid grid-cols-2 gap-4">
             <div class="">
-                <label for="title" class="w-full">Firt Name</label>
-                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2" placeholder="Enter First Name"
+                <label for="firstname" class="w-full">Firt Name <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter First Name"
                     autocomplete="off" formControlName="firstname">
+
+                @if(firstname.invalid && (firstname.dirty || firstname.touched)){
+                    @if(firstname.hasError('required')){
+                        <p class="text-red-500">First name is required</p>
+                    }
+                }
             </div>
             <div class="">
-                <label for="title" class="w-full">Last Name</label>
-                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2" placeholder="Enter Last Name"
+                <label for="lastname" class="w-full">Last Name <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter Last Name"
                     autocomplete="off" formControlName="lastname">
+
+                @if(lastname.invalid && (lastname.dirty || lastname.touched)){
+                    @if(lastname.hasError('required')){
+                        <p class="text-red-500">Last name is required</p>
+                    }
+                }
             </div>
 
         </div>
         <div class="grid grid-cols-2 gap-4 mt-5">
             <div class="">
-                <label for="title" class="w-full">Program</label>
-                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2" placeholder="Enter Program Name"
+                <label for="email" class="w-full">Email <span class="text-red-500">*</span></label>
+                <input type="email" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter Email"
+                    autocomplete="off" formControlName="email">
+                    @if(email.invalid && (email.dirty || email.touched)){
+                        @if(email.hasError('required')) {
+                            <p class="text-red-500">Email is required</p>
+                        }
+                        @if(email.hasError('email')) {
+                            <p class="text-red-500">Invalid email</p>
+                        }
+
+                    }
+            </div>
+            <div class="">
+                <label for="phoneNumber" class="w-full">Phone Number</label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Mobile Number"
+                    autocomplete="off" formControlName="phoneNumber">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-5">
+            <div class="">
+                <label for="program" class="w-full">Program <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter Program Name"
                     autocomplete="off" formControlName="program">
+                    @if(program.invalid && (program.dirty || program.touched)){
+                        @if(program.hasError('required')) {
+                            <p class="text-red-500">Program is required</p>
+                        }
+                    }
+                    
             </div>
             <div class="">
-                <label for="title" class="w-full">No of Member</label>
-                <input type="number" class="bg-neutral-100 w-full px-4 py-2 mt-2" placeholder="" autocomplete="off" formControlName="numOfMentor">
+                <label for="numOfMentor" class="w-full">No of Member <span class="text-red-500">*</span></label>
+                <input type="number" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="" autocomplete="off" formControlName="numOfMentor">
+                @if(numOfMentor.invalid && (numOfMentor.dirty || numOfMentor.touched)){
+                    @if(numOfMentor.hasError('required')) {
+                        <p class="text-red-500">No of Member is required</p>
+                    }
+                }
             </div>
         </div>
         <div class="grid grid-cols-1 mt-5">
             <div class="">
-                <label for="status" class="w-full">Note</label>
-                <textarea name="" class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px]"
+                <label for="note" class="w-full">Note</label>
+                <textarea name="" class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px] placeholder-neutral-400"
                     placeholder="Post Note" formControlName="note"></textarea>
+                <div class="text-xs text-gray-500 mt-1">
+                  {{ note?.value?.length || 0 }}/3000 characters
+                </div>
+                    @if(note.invalid && (note.dirty || note.touched)){
+                        @if(note.hasError('maxlength')) {
+                            <p class="text-red-500">Note must not exceed 2000 characters</p>
+                        }
+                    }
             </div>
         </div>
         <div class="grid grid-cols-1 mt-5">
             <div class="">
-                <label for="status" class="w-full">Status</label>
+                <label for="status" class="w-full">Status <span class="text-red-500">*</span></label>
                 <select id="status" class="bg-neutral-100 w-full px-4 py-2 mt-2" formControlName="status">
                     <option>Please select</option>
                     <option value="In-Progress">In-Progress</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                 </select>
+                @if(status.invalid && (status.dirty || status.touched)){
+                    @if(status.hasError('required')) {
+                        <p class="text-red-500">Status is required</p>
+                    }
+                }
             </div>
         </div>
         <div class="mt-5">
-            <button type="submit" class="px-4 py-2 rounded bg-indigo-500 text-white">
+            <button type="submit" 
+                class="px-4 py-2 rounded bg-indigo-500 text-white disabled:opacity-50"
+                [disabled]="createPostForm.valid === false">
                 Publish
             </button>
         </div>
