@@ -109,6 +109,11 @@
                         <img [src]="createPostForm.getRawValue().profileImageUrl" class="w-[150px]" />
                     </div>
                 }
+                @else {
+                    <div class="mt-4">
+                        <img src="assets/images/default-avatar.png" class="w-[150px]" alt="Default Avatar" />
+                    </div>
+                }
             </div>
         </div>
         <div class="grid grid-cols-1 mt-5">

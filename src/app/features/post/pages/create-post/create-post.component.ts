@@ -28,7 +28,7 @@ export class CreatePostComponent {
     program: new FormControl<string>('', { nonNullable: true, validators: [Validators.required]}),
     numOfMentor: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
     note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(2000)]}),
-    profileImageUrl: new FormControl<string>('', { nonNullable: true}),
+    profileImageUrl: new FormControl<string>('assets/images/default-avatar.png', { nonNullable: true}),
     status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
   });
 
