@@ -79,9 +79,11 @@
         </div>
         <div class="grid grid-cols-1 mt-5">
             <div class="">
-                <label for="note" class="w-full">Note</label>
-                <textarea name="" class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px] placeholder-neutral-400"
+                <label for="note" class="w-full">Note <span class="text-xs text-neutral-500">(You can use markdown styling)</span></label>
+                <div class="">
+                    <textarea name="" class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px] placeholder-neutral-400"
                     placeholder="Post Note" formControlName="note"></textarea>
+                </div>
                 <div class="text-xs text-gray-500 mt-1">
                   {{ note?.value?.length || 0 }}/3000 characters
                 </div>
