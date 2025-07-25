@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { addDoc, collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { RouterLink } from '@angular/router';
 
@@ -9,6 +10,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './create-post.component.css'
 })
 export class CreatePostComponent {
+
+  firestore = inject(Firestore);
 
   createPostForm = new FormGroup({
     firstname: new FormControl<string>('', { nonNullable: true, validators:[Validators.required] }),
@@ -49,6 +52,38 @@ export class CreatePostComponent {
   }
 
   onFormSubmit(){
-    console.log(this.createPostForm.value);
+    if(this.createPostForm.valid === false){
+      return;
+    }
+
+    // addDoc
+    // Firebase define ID
+    const postCollectionReference = collection(this.firestore, 'mentor-post');
+    addDoc(postCollectionReference, {
+      firstname: this.createPostForm.value.firstname,
+      lastname: this.createPostForm.value.lastname,
+      email: this.createPostForm.value.email,
+      phoneNumber: this.createPostForm.value.phoneNumber,
+      program: this.createPostForm.value.program,
+      numOfMentor: this.createPostForm.value.numOfMentor,
+      note: this.createPostForm.value.note,
+      status:this.createPostForm.value.status,
+      publishedOn: new Date(),
+    })
+
+    // setDoc
+    // if you want to define your own ID
+    // const postCollectionReference = doc(this.firestore, 'mentor-post', 'this-is-a-title-123');
+    // setDoc(postCollectionReference, {
+    //   firstname: this.createPostForm.value.firstname,
+    //   lastname: this.createPostForm.value.lastname,
+    //   email: this.createPostForm.value.email,
+    //   phoneNumber: this.createPostForm.value.phoneNumber,
+    //   program: this.createPostForm.value.program,
+    //   numOfMentor: this.createPostForm.value.numOfMentor,
+    //   note: this.createPostForm.value.note,
+    //   status:this.createPostForm.value.status,
+    //   publishedOn: new Date(),
+    // })
   }
 }
