@@ -18,6 +18,7 @@ export class MentorpostService {
     program:string,
     numOfMentor: number,
     note: string,
+    profileImageUrl: string,
     status: string,
   ){
     // addDoc
@@ -31,6 +32,7 @@ export class MentorpostService {
       program: program,
       numOfMentor: numOfMentor,
       note: note,
+      profileImageUrl: profileImageUrl,
       status:status,
       publishedOn: new Date(),
     })

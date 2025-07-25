@@ -3,6 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { MentorpostService } from '../../services/mentorpost.service';
 import { MarkdownModule } from 'ngx-markdown';
+import { ImageService } from '../../../../shared/services/image.service';
+import { getDownloadURL } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-create-post',
@@ -13,6 +15,10 @@ import { MarkdownModule } from 'ngx-markdown';
 export class CreatePostComponent {
 
   mentorPostService = inject(MentorpostService);
+  imageService = inject(ImageService);
+
+  imageTypeError: boolean = false;
+  imageSizeError: boolean = false;
 
   createPostForm = new FormGroup({
     firstname: new FormControl<string>('', { nonNullable: true, validators:[Validators.required] }),
@@ -22,6 +28,7 @@ export class CreatePostComponent {
     program: new FormControl<string>('', { nonNullable: true, validators: [Validators.required]}),
     numOfMentor: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
     note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(2000)]}),
+    profileImageUrl: new FormControl<string>('', { nonNullable: true}),
     status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
   });
 
@@ -65,7 +72,57 @@ export class CreatePostComponent {
         this.createPostForm.getRawValue().program,
         this.createPostForm.getRawValue().numOfMentor,
         this.createPostForm.getRawValue().note,
+        this.createPostForm.getRawValue().profileImageUrl,
         this.createPostForm.getRawValue().status,
-    )
+    );
+    alert('Mentor Saved Successfully');
+    this.createPostForm.reset();
+  }
+
+  onProfileImageSelected(input: HTMLInputElement){
+    if(!input.files || input.files.length <= 0){
+      return;
+    }
+
+    const file: File = input.files[0]
+    const validTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+      'image/bmp',
+      'image/svg+xml',
+      'image/x-icon',
+      'image/heic',
+      'image/heif'
+    ];
+    if (!validTypes.includes(file.type)) {
+      this.imageTypeError = true;
+      input.value = '';
+      return;
+    } else {
+      this.imageTypeError = false;
+    }
+
+    // File size validation (2MB max)
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    if (file.size > maxSize) {
+      this.imageSizeError = true;
+      input.value = '';
+      return;
+    } else {
+      this.imageSizeError = false;
+    }
+
+    this.imageService.uploadImage(file.name, file).then((snapshot)=>{
+      getDownloadURL(snapshot.ref).then((downLoadUrl)=>{
+
+        this.createPostForm.patchValue({
+          profileImageUrl: downLoadUrl
+        });
+
+        alert('Image upload succesfully');
+      })
+    })
   }
 }

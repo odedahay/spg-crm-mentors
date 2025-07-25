@@ -95,6 +95,23 @@
             </div>
         </div>
         <div class="grid grid-cols-1 mt-5">
+            <div>
+                <input type="file" class="hidden" accept="image/*" (change)="onProfileImageSelected(profileImageInput)" #profileImageInput>
+                <button class="border rounded px-4 py-2" (click)="profileImageInput.click()">Add Profile Image</button>
+                @if(imageTypeError){
+                    <div class="text-red-500 mt-2">Only image files (.jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico, .heic, .heif) are allowed.</div>
+                }
+                @if(imageSizeError){
+                    <div class="text-red-500 mt-2">File size must not exceed 2MB.</div>
+                }
+                @if(createPostForm.getRawValue().profileImageUrl){
+                    <div class="mt-4">
+                        <img [src]="createPostForm.getRawValue().profileImageUrl" class="w-[150px]" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mt-5">
             <div class="">
                 <label for="status" class="w-full">Status <span class="text-red-500">*</span></label>
                 <select id="status" class="bg-neutral-100 w-full px-4 py-2 mt-2" formControlName="status">
