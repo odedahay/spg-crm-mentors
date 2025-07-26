@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy, doc, docData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { MentorPost } from '../models/mentorpost.model';
 
@@ -54,10 +54,20 @@ export class MentorpostService {
     //   publishedOn: new Date(),
     // })
   }
-
+  // Return collection
   getMentorPosts(): Observable<MentorPost[]> {
     const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');
     const q = query(mentorPostCollectionRef, orderBy('publishedOn', 'desc'));
+    
     return collectionData(q, { idField: 'id' }) as Observable<MentorPost[]>;
+  }
+
+  // Return Single Data
+  getMentorPostById(id: string): Observable<MentorPost>{
+    const mentorPostDocumentRef = doc(this.firestore, 'mentor-post', id);
+
+    return docData(mentorPostDocumentRef, {
+      idField: 'id'
+    }) as Observable<MentorPost>;
   }
 }

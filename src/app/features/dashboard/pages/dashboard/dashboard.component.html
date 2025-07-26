@@ -52,7 +52,7 @@
                             <td class="border border-neutral-100 px-4 py-2">{{mentorPost.id}}</td>
                             <td class="border border-neutral-100 px-4 py-2">
                                 <img [src]="mentorPost.profileImageUrl || 'assets/images/default-avatar.png'" 
-                                     class="w-[60px]" 
+                                     class="w-[60px] h-[60px] object-cover rounded-full" 
                                      [alt]="mentorPost.firstname"
                                      (error)="onImageError($event)"/>
                             </td>

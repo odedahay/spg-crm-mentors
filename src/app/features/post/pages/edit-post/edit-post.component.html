@@ -1,0 +1,150 @@
+<div class="max-w-7xl mx-auto p-4">
+    <div class="flex items-center justify-between my-8">
+        <h1 class="text-4xl font-bold">Edit Mentor</h1>
+        <a [routerLink]="['/dashboard']" class="flex items-center text-indigo-500">
+            <span class="material-symbols-outlined">
+            chevron_backward
+            </span> Back to Dashboard</a>
+    </div>
+    
+
+    <form [formGroup]="editPostForm" (ngSubmit)="onFormSubmit()">
+        <div class="grid grid-cols-1 mt-5">
+            <div class="">
+                <label for="status" class="w-full">ID <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter First Name"
+                    autocomplete="off" formControlName="id" readonly>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-5">
+            <div class="">
+                <label for="firstname" class="w-full">Firt Name <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter First Name"
+                    autocomplete="off" formControlName="firstname">
+
+                @if(firstname.invalid && (firstname.dirty || firstname.touched)){
+                    @if(firstname.hasError('required')){
+                        <p class="text-red-500">First name is required</p>
+                    }
+                }
+            </div>
+            <div class="">
+                <label for="lastname" class="w-full">Last Name <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter Last Name"
+                    autocomplete="off" formControlName="lastname">
+
+                @if(lastname.invalid && (lastname.dirty || lastname.touched)){
+                    @if(lastname.hasError('required')){
+                        <p class="text-red-500">Last name is required</p>
+                    }
+                }
+            </div>
+
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-5">
+            <div class="">
+                <label for="email" class="w-full">Email <span class="text-red-500">*</span></label>
+                <input type="email" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter Email"
+                    autocomplete="off" formControlName="email">
+                    @if(email.invalid && (email.dirty || email.touched)){
+                        @if(email.hasError('required')) {
+                            <p class="text-red-500">Email is required</p>
+                        }
+                        @if(email.hasError('email')) {
+                            <p class="text-red-500">Invalid email</p>
+                        }
+
+                    }
+            </div>
+            <div class="">
+                <label for="phoneNumber" class="w-full">Phone Number</label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Mobile Number"
+                    autocomplete="off" formControlName="phoneNumber">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-5">
+            <div class="">
+                <label for="program" class="w-full">Program <span class="text-red-500">*</span></label>
+                <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Enter Program Name"
+                    autocomplete="off" formControlName="program">
+                    @if(program.invalid && (program.dirty || program.touched)){
+                        @if(program.hasError('required')) {
+                            <p class="text-red-500">Program is required</p>
+                        }
+                    }
+                    
+            </div>
+            <div class="">
+                <label for="numOfMentor" class="w-full">No of Member <span class="text-red-500">*</span></label>
+                <input type="number" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="" autocomplete="off" formControlName="numOfMentor">
+                @if(numOfMentor.invalid && (numOfMentor.dirty || numOfMentor.touched)){
+                    @if(numOfMentor.hasError('required')) {
+                        <p class="text-red-500">No of Member is required</p>
+                    }
+                }
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mt-5">
+            <div class="">
+                <label for="note" class="w-full">Note <span class="text-xs text-neutral-500">(You can use markdown styling)</span></label>
+                <div class="">
+                    <textarea name="" class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px] placeholder-neutral-400"
+                    placeholder="Post Note" formControlName="note"></textarea>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">
+                  {{ editPostForm.get('note')?.value?.length || 0 }}/3000 characters
+                </div>
+                    @if(note.invalid && (note.dirty || note.touched)){
+                        @if(note.hasError('maxlength')) {
+                            <p class="text-red-500">Note must not exceed 3000 characters</p>
+                        }
+                    }
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mt-5">
+            <div>
+                <input type="file" class="hidden" accept="image/*" (change)="onProfileImageSelected(profileImageInput)" #profileImageInput>
+                <button class="border rounded px-4 py-2" (click)="profileImageInput.click()">Add Profile Image</button>
+                @if(imageTypeError){
+                    <div class="text-red-500 mt-2">Only image files (.jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico, .heic, .heif) are allowed.</div>
+                }
+                @if(imageSizeError){
+                    <div class="text-red-500 mt-2">File size must not exceed 2MB.</div>
+                }
+                @if(editPostForm.getRawValue().profileImageUrl){
+                    <div class="mt-4">
+                        <img [src]="editPostForm.getRawValue().profileImageUrl" class="w-[150px]" />
+                    </div>
+                }
+                @else {
+                    <div class="mt-4">
+                        <img src="assets/images/default-avatar.png" class="w-[150px]" alt="Default Avatar" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="grid grid-cols-1 mt-5">
+            <div class="">
+                <label for="status" class="w-full">Status <span class="text-red-500">*</span></label>
+                <select id="status" class="bg-neutral-100 w-full px-4 py-2 mt-2" formControlName="status">
+                    <option>Please select</option>
+                    <option value="In-Progress">In-Progress</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                @if(status.invalid && (status.dirty || status.touched)){
+                    @if(status.hasError('required')) {
+                        <p class="text-red-500">Status is required</p>
+                    }
+                }
+            </div>
+        </div>
+        <div class="mt-5">
+            <button type="submit" 
+                class="px-4 py-2 rounded bg-indigo-500 text-white disabled:opacity-50"
+                [disabled]="editPostForm.valid === false">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
