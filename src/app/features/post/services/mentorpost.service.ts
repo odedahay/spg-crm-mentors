@@ -54,6 +54,36 @@ export class MentorpostService {
     //   publishedOn: new Date(),
     // })
   }
+
+  // Update Method
+  updateMentorPost(
+    id: string,
+    firstname:string,
+    lastname: string,
+    email: string,
+    phoneNumber: string,
+    program:string,
+    numOfMentor: number,
+    note: string,
+    profileImageUrl: string,
+    status: string,
+  ){
+    // setDoc - define your own ID
+    const postCollectionReference = doc(this.firestore, 'mentor-post', id);
+    setDoc(postCollectionReference, {
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      phoneNumber: phoneNumber,
+      program: program,
+      numOfMentor: numOfMentor,
+      note: note,
+      profileImageUrl: profileImageUrl,
+      status:status,
+      publishedOn: new Date(),
+    });
+  }
+
   // Return collection
   getMentorPosts(): Observable<MentorPost[]> {
     const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');

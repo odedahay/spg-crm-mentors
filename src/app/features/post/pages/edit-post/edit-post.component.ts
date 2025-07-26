@@ -1,7 +1,7 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { MentorpostService } from '../../services/mentorpost.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/services/image.service';
 import { getDownloadURL } from '@angular/fire/storage';
@@ -16,6 +16,7 @@ export class EditPostComponent implements OnInit{
 
   mentorPostService = inject(MentorpostService);
   imageService = inject(ImageService);
+  router = inject(Router);
   
   id = input<string | undefined>(undefined);
 
@@ -86,7 +87,7 @@ export class EditPostComponent implements OnInit{
     if(!input.files || input.files.length <= 0){
       return;
     }
-
+    // Validation for file size
     const file: File = input.files[0]
     const validTypes = [
       'image/jpeg',
@@ -140,7 +141,27 @@ export class EditPostComponent implements OnInit{
   }
 
   onFormSubmit(){
+    if(this.editPostForm.invalid){
+      return;
+    }
 
+    const rawValue = this.editPostForm.getRawValue();
+
+    this.mentorPostService.updateMentorPost(
+      rawValue.id,
+      rawValue.firstname,
+      rawValue.lastname,
+      rawValue.email,
+      rawValue.phoneNumber,
+      rawValue.program,
+      rawValue.numOfMentor,
+      rawValue.note,
+      rawValue.profileImageUrl,
+      rawValue.status
+    );
+
+    alert('Successfully Saved');
+    this.router.navigateByUrl('/dashboard')
   }
   
 }
