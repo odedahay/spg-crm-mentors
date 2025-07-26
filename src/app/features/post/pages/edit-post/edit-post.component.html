@@ -104,7 +104,7 @@
         <div class="grid grid-cols-1 mt-5">
             <div>
                 <input type="file" class="hidden" accept="image/*" (change)="onProfileImageSelected(profileImageInput)" #profileImageInput>
-                <button class="border rounded px-4 py-2" (click)="profileImageInput.click()">Add Profile Image</button>
+                <button type="button" class="border rounded px-4 py-2" (click)="profileImageInput.click()">Add Profile Image</button>
                 @if(imageTypeError){
                     <div class="text-red-500 mt-2">Only image files (.jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico, .heic, .heif) are allowed.</div>
                 }
