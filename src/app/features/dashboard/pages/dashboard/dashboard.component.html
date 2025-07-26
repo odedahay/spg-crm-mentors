@@ -1,0 +1,85 @@
+<div class="max-w-fit mx-auto p-10">
+    <div class="ms-auto flex items-center justify-between mt-3 mb-8">
+        <h1 class="text-4xl font-bold">Dashboard</h1>
+        <a [routerLink]="['/create-post']" class="bg-indigo-500 text-white px-4 py-2 rounded">
+            Create Mentor
+        </a>
+    </div>
+
+    <div class="mt-4">
+        <div class="grid grid-cols-6 gap-3">
+            <app-dashboard-statistics [value]="totalMentors()" [labelDescription]="'Mentors'"></app-dashboard-statistics>
+            <app-dashboard-statistics [value]="totalActiveMentors()" [labelDescription]="'Total Active'"></app-dashboard-statistics>
+            <app-dashboard-statistics [value]="totalInactiveMentors()" [labelDescription]="'Total Inactive'"></app-dashboard-statistics>
+            <app-dashboard-statistics [value]="totalInProgressMentors()" [labelDescription]="'Total In-Progress'"></app-dashboard-statistics>
+        </div>
+    </div>
+
+    <div class="mt-8">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center border border-gray-300 rounded-md">
+                <input
+                  type="search"
+                  placeholder="Search..."
+                  class="w-full px-4 py-2 focus:outline-none"
+                />
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md">
+                  Search
+                </button>
+              </div>
+            <div class="flex items-center cursor-pointer gap-2 rounded-full border border-neutral-300 px-4 py-2 text-neutral-700 hover:bg-blue-500 hover:text-white">
+                <span class="material-symbols-outlined">download</span> 
+                <span class="text-xs">Dowload Excel</span>
+            </div>
+        </div>
+        <div class="mt-8">
+            <table class="table-fixed w-full border-collapse">
+                <thead>
+                  <tr>
+                    <th class="px-4 py-2 text-left">Tracking ID</th>
+                    <th class="px-4 py-2 text-left">Profile Image</th>
+                    <th class="px-4 py-2 text-left">Mentor</th>
+                    <th class="px-4 py-2 text-left">Program</th>
+                    <th class="px-4 py-2 text-left">No of Member</th>
+                    <th class="px-4 py-2 text-left">Date</th>
+                    <th class="px-4 py-2 text-left">Status</th>
+                    <th class="px-4 py-2 text-left">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @for(mentorPost of mentorPosts();track mentorPost.id){
+                        <tr class="even:bg-neutral-100">
+                            <td class="border border-neutral-100 px-4 py-2">{{mentorPost.id}}</td>
+                            <td class="border border-neutral-100 px-4 py-2">
+                                <img [src]="mentorPost.profileImageUrl || 'assets/images/default-avatar.png'" 
+                                     class="w-[60px]" 
+                                     [alt]="mentorPost.firstname"
+                                     (error)="onImageError($event)"/>
+                            </td>
+                            <td class="border border-neutral-100 px-4 py-2">{{mentorPost.firstname}} {{mentorPost.lastname}}</td>
+                            <td class="border border-neutral-100 px-4 py-2">{{mentorPost.program}}</td>
+                            <td class="border border-neutral-100 px-4 py-2">{{mentorPost.numOfMentor}}</td>
+                            <td class="border border-neutral-100 px-4 py-2">{{convertTimestampToDate(mentorPost.publishedOn) | date:'dd-MM-yyyy' }}</td>
+                            <td class="border border-neutral-100 px-4 py-2">
+                                <span class="inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-30"
+                                      [class]="getStatusBadgeClass(mentorPost.status)">
+                                  {{mentorPost.status}}
+                                </span>
+                              </td>
+                            <td class="border border-neutral-100 px-4 py-2">
+                                <a [routerLink]="['/edit-post', mentorPost.id]" class="flex items-center">
+                                    <span class="material-symbols-outlined me-1 text-indigo-500" title="Edit">edit</span> <span class="text-xs text-indigo-500">Edit</span>
+                                </a>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                            <td colspan="8" class="border border-neutral-100 px-4 py-2 text-center">No mentor posts found</td>
+                        </tr>
+                    }
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

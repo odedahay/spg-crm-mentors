@@ -27,7 +27,7 @@ export class CreatePostComponent {
     phoneNumber: new FormControl<string>('', {nonNullable: true}),
     program: new FormControl<string>('', { nonNullable: true, validators: [Validators.required]}),
     numOfMentor: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
-    note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(2000)]}),
+    note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(3000)]}),
     profileImageUrl: new FormControl<string>('assets/images/default-avatar.png', { nonNullable: true}),
     status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
   });
@@ -97,21 +97,31 @@ export class CreatePostComponent {
       'image/heif'
     ];
     if (!validTypes.includes(file.type)) {
+
       this.imageTypeError = true;
       input.value = '';
+
       return;
+
     } else {
+      
       this.imageTypeError = false;
+    
     }
 
     // File size validation (2MB max)
     const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
     if (file.size > maxSize) {
       this.imageSizeError = true;
       input.value = '';
+    
       return;
+    
     } else {
+    
       this.imageSizeError = false;
+    
     }
 
     this.imageService.uploadImage(file.name, file).then((snapshot)=>{

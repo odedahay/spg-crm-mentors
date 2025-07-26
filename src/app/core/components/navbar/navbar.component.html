@@ -1,12 +1,19 @@
-<div class="max-w-7xl mx-auto">
-    <div class="p-4 flex">
+<div class="max-w-full mx-auto p-10">
+    <div class="flex justify-between">
         <a [routerLink]="['/']">
             <img src="/assets/images/spg-logo.svg" alt="SPG Logo" class="w-[150px]">
         </a>
-        <div class="ms-auto flex items-center">
-            <a [routerLink]="['/create-post']" class="bg-indigo-500 text-white px-4 py-2 rounded">
-                Create Mentor
-            </a>
-        </div>
+
+        @if(userService.isLoggedIn){
+            <div class="ms-auto flex items-center">
+                <app-logged-in-functionality></app-logged-in-functionality>
+            </div>
+        }@else {
+            <div class="ms-auto flex items-center">
+                <app-logged-out-functionality></app-logged-out-functionality>
+            </div>
+             
+        }
+        
     </div>
 </div>

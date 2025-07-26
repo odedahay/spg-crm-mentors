@@ -1,5 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore, setDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { MentorPost } from '../models/mentorpost.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +55,8 @@ export class MentorpostService {
     // })
   }
 
+  getMentorPosts(): Observable<MentorPost[]> {
+    const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');
+    return collectionData(mentorPostCollectionRef, { idField: 'id' }) as Observable<MentorPost[]>;
+  }
 }

@@ -1,0 +1,20 @@
+<div class="flex items-center gap-3">
+    <a [routerLink]="['/dashboard']"
+        class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"><span class="material-symbols-outlined">dashboard</span> Dashboard</a>
+    <div class="relative">
+        <a class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"
+            (click)="navBarService.toggleNavbarMenu()">
+            <span class="material-symbols-outlined">account_circle</span> Rodel
+        </a>
+        <ul class="min-w-[200px] absolute right-0 top-14 bg-neutral-50 border border-neutral-300 rounded"
+            [class]="navBarService.hideUserMenu() ? 'hidden' : '' ">
+            <li class="py-2 px-3 hover:bg-neutral-200" (click)="navBarService.toggleNavbarMenu()">
+                <a [routerLink]="['/logout']" class="flex items-center ">
+                    <span class="material-symbols-outlined">exit_to_app</span>
+                    <span class="ms-2">Log Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
