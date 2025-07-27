@@ -20,6 +20,8 @@ export class DashboardComponent {
 
   mentorPosts = toSignal(this.mentorPostService.getMentorPosts());
   searchQuery = signal('');
+  currentPage = signal(1);
+  itemsPerPage = 10;
 
   totalMentors = computed(()=>{
     return this.mentorPosts()?.length ?? 0;
@@ -52,6 +54,66 @@ export class DashboardComponent {
     });
   });
 
+  paginatedMentorPosts = computed(() => {
+    const start = (this.currentPage() - 1) * this.itemsPerPage;
+    const posts = this.filteredMentorPosts();
+    return posts.slice(start, start + this.itemsPerPage);
+  });
+
+  totalPages = computed(() => {
+    const total = Math.ceil(this.filteredMentorPosts().length / this.itemsPerPage);
+    return total > 0 ? total : 1;
+  });
+
+  pageNumbers = computed(() => {
+    const total = this.totalPages();
+    const current = this.currentPage();
+    const pages: number[] = [];
+    
+    if (total <= 7) {
+      // Show all pages if 7 or fewer
+      for (let i = 1; i <= total; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Show smart pagination with ellipsis
+      if (current <= 4) {
+        // Show first 5 pages + ellipsis + last page
+        for (let i = 1; i <= 5; i++) {
+          pages.push(i);
+        }
+        pages.push(-1); // Ellipsis
+        pages.push(total);
+      } else if (current >= total - 3) {
+        // Show first page + ellipsis + last 5 pages
+        pages.push(1);
+        pages.push(-1); // Ellipsis
+        for (let i = total - 4; i <= total; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Show first page + ellipsis + current-1, current, current+1 + ellipsis + last page
+        pages.push(1);
+        pages.push(-1); // Ellipsis
+        for (let i = current - 1; i <= current + 1; i++) {
+          pages.push(i);
+        }
+        pages.push(-1); // Ellipsis
+        pages.push(total);
+      }
+    }
+    
+    return pages;
+  });
+
+  startItem = computed(() => {
+    return (this.currentPage() - 1) * this.itemsPerPage + 1;
+  });
+
+  endItem = computed(() => {
+    return Math.min(this.currentPage() * this.itemsPerPage, this.filteredMentorPosts().length);
+  });
+
   convertTimestampToDate(timestamp: Timestamp){
     return timestamp.toDate(); 
   }
@@ -75,5 +137,28 @@ export class DashboardComponent {
 
   onSearchChange(value: string) {
     this.searchQuery.set(value);
+    this.currentPage.set(1); // Reset to first page when searching
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage() > 1) {
+      this.currentPage.set(this.currentPage() - 1);
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.set(this.currentPage() + 1);
+    }
+  }
+
+  trackByPage(index: number, page: number): number {
+    return page;
   }
 }
