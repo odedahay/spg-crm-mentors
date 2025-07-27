@@ -127,9 +127,9 @@ export class DashboardComponent {
 
   getStatusBadgeClass(status: string): string {
     const statusClasses: { [key: string]: string } = {
-      'In-Progress': 'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
-      'Active': 'bg-green-50 text-green-700 ring-green-600/20',
-      'Inactive': 'bg-gray-50 text-gray-600 ring-gray-500/10'
+      'In-Progress': 'bg-yellow-100 text-yellow-800 ring-yellow-600/20',
+      'Active': 'bg-green-100 text-green-700 ring-green-600/20',
+      'Inactive': 'bg-gray-200 text-gray-600 ring-gray-500/10'
     };
     
     return statusClasses[status] || 'bg-gray-50 text-gray-600 ring-gray-500/10';
