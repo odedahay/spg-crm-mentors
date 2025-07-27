@@ -108,4 +108,11 @@ export class MentorpostService {
 
     return from(promise);
   }
+
+  // getAllMentorPosts(): Observable<MentorPost[]> {
+  //   const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');
+  //   return collectionData(mentorPostCollectionRef, { idField: 'id' }) as Observable<MentorPost[]>;
+  // }
 }
+
+ 

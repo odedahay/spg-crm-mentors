@@ -7,6 +7,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MentorPost } from '../../../post/models/mentorpost.model';
 import { Timestamp } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-dashboard',
@@ -161,4 +162,15 @@ export class DashboardComponent {
   trackByPage(index: number, page: number): number {
     return page;
   }
+
+  downloadExcel(){
+    this.mentorPostService.getMentorPosts().subscribe((data: MentorPost[]) => {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Mentors');
+      XLSX.writeFile(workbook, 'Mentors.xlsx');
+    })
+  }
+
 }
