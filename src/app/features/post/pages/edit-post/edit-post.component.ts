@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/services/image.service';
 import { getDownloadURL } from '@angular/fire/storage';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-post',
@@ -17,12 +18,14 @@ export class EditPostComponent implements OnInit{
   mentorPostService = inject(MentorpostService);
   imageService = inject(ImageService);
   router = inject(Router);
-  
+  toastr = inject(ToastrService);
+
   id = input<string | undefined>(undefined);
 
   imageTypeError: boolean = false;
   imageSizeError: boolean = false;
   showDeleteConfirm: boolean = false;
+  isUploadingImage: boolean = false;
 
   ngOnInit(): void {
     this.mentorPostService.getMentorPostById(this.id() ?? '')
@@ -129,15 +132,24 @@ export class EditPostComponent implements OnInit{
     
     }
 
+    this.isUploadingImage = true; // Start loading on error
+
     this.imageService.uploadImage(file.name, file).then((snapshot)=>{
       getDownloadURL(snapshot.ref).then((downLoadUrl)=>{
 
         this.editPostForm.patchValue({
           profileImageUrl: downLoadUrl
         });
+        this.isUploadingImage = false;
 
-        alert('Image upload succesfully');
-      })
+        //alert('Image upload succesfully');
+        this.toastr.success('Image upload succesfully', 'Success');
+        this.isUploadingImage = false; // Stop loading
+      }).catch(()=>{
+        this.isUploadingImage = false; // Stop loading on error
+      });
+    }).catch(()=>{
+      this.isUploadingImage = false; // Stop loading on error
     })
   }
 
@@ -161,8 +173,9 @@ export class EditPostComponent implements OnInit{
       rawValue.status
     );
 
-    alert('Successfully Saved');
+    //alert('Successfully Saved');
     this.router.navigateByUrl('/dashboard')
+    this.toastr.success('Succesfully saved', 'Success');
   }
 
   onDelete(id:string){
@@ -170,6 +183,7 @@ export class EditPostComponent implements OnInit{
     .subscribe({
       next: ()=>{
         this.router.navigateByUrl('/dashboard');
+        this.toastr.success('Succesfully saved', 'Success');
       }
     })
   }

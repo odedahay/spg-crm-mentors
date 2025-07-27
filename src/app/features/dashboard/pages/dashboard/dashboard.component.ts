@@ -8,6 +8,7 @@ import { MentorPost } from '../../../post/models/mentorpost.model';
 import { Timestamp } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ import * as XLSX from 'xlsx';
 export class DashboardComponent {
 
   mentorPostService = inject(MentorpostService);
+  toastr = inject(ToastrService);
 
   mentorPosts = toSignal(this.mentorPostService.getMentorPosts());
   searchQuery = signal('');
@@ -171,6 +173,8 @@ export class DashboardComponent {
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Mentors');
       XLSX.writeFile(workbook, 'Mentors.xlsx');
     })
+    // alert('Successfully download');
+    this.toastr.success('Successfully download', 'Success');
   }
 
 }

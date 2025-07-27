@@ -5,6 +5,8 @@ import { MentorpostService } from '../../services/mentorpost.service';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/services/image.service';
 import { getDownloadURL } from '@angular/fire/storage';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-create-post',
@@ -17,9 +19,11 @@ export class CreatePostComponent {
   mentorPostService = inject(MentorpostService);
   imageService = inject(ImageService);
   router = inject(Router);
+  toastr = inject(ToastrService)
 
   imageTypeError: boolean = false;
   imageSizeError: boolean = false;
+  isUploadingImage: boolean = false;
 
   createPostForm = new FormGroup({
     firstname: new FormControl<string>('', { nonNullable: true, validators:[Validators.required] }),
@@ -126,6 +130,8 @@ export class CreatePostComponent {
     
     }
 
+    this.isUploadingImage = true; // Start loading
+
     this.imageService.uploadImage(file.name, file).then((snapshot)=>{
       getDownloadURL(snapshot.ref).then((downLoadUrl)=>{
 
@@ -133,8 +139,14 @@ export class CreatePostComponent {
           profileImageUrl: downLoadUrl
         });
 
-        alert('Image upload succesfully');
-      })
-    })
+        // alert('Image upload succesfully');
+        this.toastr.success('Image upload succesfully', 'Success');
+        this.isUploadingImage = false; // Stop loading
+      }).catch(() => {
+        this.isUploadingImage = false; // Stop loading on error
+      });
+    }).catch(() => {
+      this.isUploadingImage = false; // Stop loading on error
+    });
   }
 }

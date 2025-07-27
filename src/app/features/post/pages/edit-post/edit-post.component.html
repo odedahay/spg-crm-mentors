@@ -23,7 +23,7 @@
                         <label for="firstname" class="w-full">Firt Name <span class="text-red-500">*</span></label>
                         <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400"
                             placeholder="Enter First Name" autocomplete="off" formControlName="firstname">
-        
+
                         @if(firstname.invalid && (firstname.dirty || firstname.touched)){
                         @if(firstname.hasError('required')){
                         <p class="text-red-500">First name is required</p>
@@ -34,14 +34,14 @@
                         <label for="lastname" class="w-full">Last Name <span class="text-red-500">*</span></label>
                         <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400"
                             placeholder="Enter Last Name" autocomplete="off" formControlName="lastname">
-        
+
                         @if(lastname.invalid && (lastname.dirty || lastname.touched)){
                         @if(lastname.hasError('required')){
                         <p class="text-red-500">Last name is required</p>
                         }
                         }
                     </div>
-        
+
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-5">
                     <div class="">
@@ -55,7 +55,7 @@
                         @if(email.hasError('email')) {
                         <p class="text-red-500">Invalid email</p>
                         }
-        
+
                         }
                     </div>
                     <div class="">
@@ -74,12 +74,12 @@
                         <p class="text-red-500">Program is required</p>
                         }
                         }
-        
+
                     </div>
                     <div class="">
                         <label for="numOfMentor" class="w-full">No of Member <span class="text-red-500">*</span></label>
-                        <input type="number" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder=""
-                            autocomplete="off" formControlName="numOfMentor">
+                        <input type="number" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400"
+                            placeholder="" autocomplete="off" formControlName="numOfMentor">
                         @if(numOfMentor.invalid && (numOfMentor.dirty || numOfMentor.touched)){
                         @if(numOfMentor.hasError('required')) {
                         <p class="text-red-500">No of Member is required</p>
@@ -89,10 +89,12 @@
                 </div>
                 <div class="grid grid-cols-1 mt-5">
                     <div class="">
-                        <label for="note" class="w-full">Note <span class="text-xs text-neutral-500">(You can use markdown
+                        <label for="note" class="w-full">Note <span class="text-xs text-neutral-500">(You can use
+                                markdown
                                 styling)</span></label>
                         <div class="">
-                            <textarea name="" class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px] placeholder-neutral-400"
+                            <textarea name=""
+                                class="bg-neutral-100 w-full px-4 py-2 mt-2 h-[200px] placeholder-neutral-400"
                                 placeholder="Post Note" formControlName="note"></textarea>
                         </div>
                         <div class="text-xs text-gray-500 mt-1">
@@ -122,18 +124,21 @@
                     </div>
                 </div>
                 <div class="mt-5 flex justify-between gap-3">
-                    <button type="submit" class="px-4 py-2 rounded bg-indigo-500 text-white disabled:opacity-50 cursor-pointer hover:bg-indigo-400"
+                    <button type="submit"
+                        class="px-4 py-2 rounded bg-indigo-500 text-white disabled:opacity-50 cursor-pointer hover:bg-indigo-400"
                         [disabled]="editPostForm.valid === false">
                         Save
                     </button>
-                    <button type="button" class="px-4 py-2 rounded border-red-500 text-red-500 cursor-pointer hover:bg-red-400 hover:text-white"
-                        (click)="showDeleteConfirm = true"><span class="material-symbols-outlined">delete</span></button>
+                    <button type="button"
+                        class="px-4 py-2 rounded border-red-500 text-red-500 cursor-pointer hover:bg-red-400 hover:text-white"
+                        (click)="showDeleteConfirm = true"><span
+                            class="material-symbols-outlined">delete</span></button>
                 </div>
             </div>
             <div class="col-span-2">
                 <input type="file" class="hidden" accept="image/*" (change)="onProfileImageSelected(profileImageInput)"
                     #profileImageInput>
-                   
+
                 @if(imageTypeError){
                 <div class="text-red-500 mt-2">Only image files (.jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico,
                     .heic, .heif) are allowed.</div>
@@ -151,11 +156,26 @@
                     <img src="assets/images/default-avatar.png" class="w-[150px]" alt="Default Avatar" />
                 </div>
                 }
-                <button type="button" class="border border-indigo-500 text-indigo-500 rounded-full px-4 py-2 mt-2 flex items-center" (click)="profileImageInput.click()"><span class="material-symbols-outlined">add</span> Profile Image</button>
+                @if(!isUploadingImage){
+                <button type="button"
+                    class="border border-indigo-500 text-indigo-500 rounded-full px-4 py-2 mt-2 flex items-center"
+                    (click)="profileImageInput.click()"><span class="material-symbols-outlined">add</span> Profile
+                    Image</button>
+                }
+                @if(isUploadingImage){
+                <div class="flex items-center gap-2 text-blue-500 mt-2">
+                    <svg class="animate-spin h-5 w-5 text-blue-500" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+                            fill="none" />
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                    </svg>
+                    Uploading image
+                </div>
+                }
             </div>
         </div>
-        
-        
+
+
     </form>
 </div>
 

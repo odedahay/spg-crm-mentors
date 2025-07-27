@@ -9,6 +9,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 import { provideMarkdown } from 'ngx-markdown';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
  
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +22,9 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()), 
     provideStorage(() => getStorage()),
     provideMarkdown(),
+    provideAnimations(),
+    provideToastr({
+      closeButton: true, positionClass: 'toast-top-right', preventDuplicates: true, timeOut: 10000,
+    }),
   ]
 };

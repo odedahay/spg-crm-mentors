@@ -146,8 +146,21 @@
                         <img src="assets/images/default-avatar.png" class="w-[150px]" alt="Default Avatar" />
                     </div>
                     }
-                    <button class="border border-indigo-500 text-indigo-500 rounded-full px-4 py-2 mt-2 flex items-center" (click)="profileImageInput.click()">
-                        <span class="material-symbols-outlined">add</span> Profile Image</button>
+                    @if(!isUploadingImage){
+                        <button class="border border-indigo-500 text-indigo-500 rounded-full px-4 py-2 mt-2 flex items-center" (click)="profileImageInput.click()">
+                            <span class="material-symbols-outlined">add</span> Profile Image
+                        </button>
+                    }
+
+                    @if(isUploadingImage){
+                        <div class="flex items-center gap-2 text-blue-500 mt-2">
+                        <svg class="animate-spin h-5 w-5 text-blue-500" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                        </svg>
+                        Uploading image
+                        </div>
+                    }
                 </div>
             </div>
 
