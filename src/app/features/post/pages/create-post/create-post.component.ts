@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MentorpostService } from '../../services/mentorpost.service';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/services/image.service';
@@ -16,6 +16,7 @@ export class CreatePostComponent {
 
   mentorPostService = inject(MentorpostService);
   imageService = inject(ImageService);
+  router = inject(Router);
 
   imageTypeError: boolean = false;
   imageSizeError: boolean = false;
@@ -77,6 +78,7 @@ export class CreatePostComponent {
     );
     alert('Mentor Saved Successfully');
     this.createPostForm.reset();
+    this.router.navigateByUrl('/dashboard');
   }
 
   onProfileImageSelected(input: HTMLInputElement){

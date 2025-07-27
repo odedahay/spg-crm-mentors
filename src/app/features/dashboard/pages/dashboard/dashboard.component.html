@@ -21,13 +21,10 @@
                 <input
                   type="search"
                   placeholder="Search..."
-                  class="w-full px-4 py-2 focus:outline-none"
+                  class="px-4 py-2 focus:outline-none w-[300px]"
                   [ngModel]="searchQuery()"
                   (ngModelChange)="onSearchChange($event)"
                 />
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-md">
-                  Search
-                </button>
               </div>
             <div class="flex items-center cursor-pointer gap-2 rounded-full border border-neutral-300 px-4 py-2 text-neutral-700 hover:bg-blue-500 hover:text-white">
                 <span class="material-symbols-outlined">download</span> 
