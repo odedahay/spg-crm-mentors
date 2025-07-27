@@ -22,6 +22,7 @@ export class EditPostComponent implements OnInit{
 
   imageTypeError: boolean = false;
   imageSizeError: boolean = false;
+  showDeleteConfirm: boolean = false;
 
   ngOnInit(): void {
     this.mentorPostService.getMentorPostById(this.id() ?? '')
@@ -162,6 +163,15 @@ export class EditPostComponent implements OnInit{
 
     alert('Successfully Saved');
     this.router.navigateByUrl('/dashboard')
+  }
+
+  onDelete(id:string){
+    this.mentorPostService.deleteBlogPostById(id)
+    .subscribe({
+      next: ()=>{
+        this.router.navigateByUrl('/dashboard');
+      }
+    })
   }
   
 }

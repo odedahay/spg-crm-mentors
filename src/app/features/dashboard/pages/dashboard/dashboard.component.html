@@ -22,8 +22,10 @@
                   type="search"
                   placeholder="Search..."
                   class="w-full px-4 py-2 focus:outline-none"
+                  [ngModel]="searchQuery()"
+                  (ngModelChange)="onSearchChange($event)"
                 />
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-md">
                   Search
                 </button>
               </div>
@@ -47,7 +49,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    @for(mentorPost of mentorPosts();track mentorPost.id){
+                    @for(mentorPost of filteredMentorPosts(); track mentorPost.id){
                         <tr class="even:bg-neutral-100">
                             <td class="border border-neutral-100 px-4 py-2">{{mentorPost.id}}</td>
                             <td class="border border-neutral-100 px-4 py-2">

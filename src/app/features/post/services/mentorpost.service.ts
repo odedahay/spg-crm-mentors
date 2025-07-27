@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy, doc, docData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy, doc, docData, deleteDoc } from '@angular/fire/firestore';
+import { from, Observable } from 'rxjs';
 import { MentorPost } from '../models/mentorpost.model';
 
 @Injectable({
@@ -99,5 +99,13 @@ export class MentorpostService {
     return docData(mentorPostDocumentRef, {
       idField: 'id'
     }) as Observable<MentorPost>;
+  }
+
+  deleteBlogPostById(id: string): Observable<void>{
+    const mentorPostDocumentRef = doc(this.firestore,'mentor-post', id );
+
+    const promise = deleteDoc(mentorPostDocumentRef);
+
+    return from(promise);
   }
 }
