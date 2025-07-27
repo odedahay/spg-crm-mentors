@@ -35,7 +35,7 @@
             <table class="table-fixed w-full border-collapse">
                 <thead>
                   <tr>
-                    <th class="px-4 py-2 text-left">Tracking ID</th>
+                    <!-- <th class="px-4 py-2 text-left">Tracking ID</th> -->
                     <th class="px-4 py-2 text-left">Profile Image</th>
                     <th class="px-4 py-2 text-left">Mentor</th>
                     <th class="px-4 py-2 text-left">Program</th>
@@ -48,7 +48,7 @@
                 <tbody>
                     @for(mentorPost of paginatedMentorPosts(); track mentorPost.id){
                         <tr class="even:bg-neutral-100">
-                            <td class="border border-neutral-100 px-4 py-2">{{mentorPost.id}}</td>
+                            <!-- <td class="border border-neutral-100 px-4 py-2">{{mentorPost.id}}</td> -->
                             <td class="border border-neutral-100 px-4 py-2">
                                 <img [src]="mentorPost.profileImageUrl || 'assets/images/default-avatar.png'" 
                                      class="w-[60px] h-[60px] object-cover rounded-full" 
