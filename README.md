@@ -1,59 +1,33 @@
-# SpgCrmMentors
+# SPG CRM Mentors
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
+## 📌 Project Overview
 
-## Development server
+**SPG CRM Mentors** is a custom-built CRM system designed for managing mentor and mentee information within the SPG education and development framework. The platform allows administrators to register mentors, track mentoring sessions, and manage program assignments. It is tailored to streamline administrative workflows and ensure accurate reporting.
 
-To start a local development server, run:
+## 🛠 Tech Stack & Tools
 
-```bash
-ng serve
-```
+- **Angular** – Frontend framework for building the application UI.
+- **Tailwind CSS** – Utility-first CSS for fast and responsive design.
+- **Firebase** – Backend platform used for:
+  - **Authentication** – User registration and login.
+  - **Firestore** – Realtime NoSQL database.
+  - **Firebase Hosting** – Deployment of the web app.
+- **Signal-based State Management** – For reactive and scalable component logic.
+- **RxJS** – For handling asynchronous data streams.
+- **XLSX (SheetJS)** – For exporting mentor data to Excel files.
+- **Chart.js (optional)** – For visualizing mentoring trends (if implemented).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## ✨ Key Features
 
-## Code scaffolding
+- Mentor registration and editing
+- Mentor listing with real-time filtering and pagination
+- Image upload and profile display
+- Firebase Auth integration
+- Excel export for reporting
+- Mobile-responsive design
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+   ```
 
-```bash
-ng generate component component-name
-```
+## 📄 License
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT License © 2025 SPG CRM Development
