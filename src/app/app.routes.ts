@@ -5,24 +5,29 @@ import { EditPostComponent } from './features/post/pages/edit-post/edit-post.com
 import { RegisterComponent } from './features/user/pages/register/register.component';
 import { LoginComponent } from './features/user/pages/login/login.component';
 import { LogoutComponent } from './features/user/pages/logout/logout.component';
+import { authGuard } from './core/guards/auth.guard'
 
 export const routes: Routes = [
     {
         path: '',
-        component: LoginComponent,
-        pathMatch: 'full'
+        component: DashboardComponent,
+        pathMatch: 'full',
+        canActivate: [authGuard]
     },
     {
         path: 'create-post',
-        component: CreatePostComponent
+        component: CreatePostComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'edit-post/:id',
-        component: EditPostComponent
+        component: EditPostComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'register',
