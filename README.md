@@ -26,7 +26,6 @@
 - Excel export for reporting
 - Mobile-responsive design
 
-   ```
 
 ## 📄 License
 
