@@ -1,0 +1,52 @@
+<div class="max-w-3xl mx-auto px-4 pb-10 mb-10 rounded overflow-hidden shadow-lg">
+ 
+    <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
+        <h1 class="text-3xl mt-8 font-bold mb-4">Register</h1>
+
+        <div class="mt-4">
+            <label for="" class="w-full">Email</label>
+            <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Email Address" autocomplete="off"
+            formControlName="email"
+            >
+            @if(emailControl.invalid && (emailControl.dirty || emailControl.touched)){
+                @if(emailControl.hasError('required')){
+                    <div class="text-red-700 mt-2 text-sm">Email is required</div>
+                }
+                @if(emailControl.hasError('email')){
+                    <div class="text-red-700 mt-2 text-sm">Invalid email</div>
+                }
+            }
+        </div>
+        <div class="mt-4">
+            <label for="" class="w-full">Password</label>
+            <input type="password" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400" placeholder="Password" autocomplete="off"
+            formControlName="password"
+            >
+            @if(passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)){
+                @if(passwordControl.hasError('required')){
+                    <div class="text-red-700 mt-2 text-sm">Password is required</div>
+                }
+                @if(passwordControl.hasError('minlength')){
+                    <div class="text-red-700 mt-2 text-sm">Password should be at least 6 characters</div>
+                }
+                @if(passwordControl.hasError('maxlength')){
+                    <div class="text-red-700 mt-2 text-sm">Password should not be more than 20 characters</div>
+                }
+            }
+        </div>
+        
+        @if(this.errorMessage()){
+            <div class="bg-red-100 p-4 mt-2 text-sm">
+                {{ this.errorMessage() }}
+            </div>
+        }
+
+        <div class="mt-8">
+            <button type="submit" class="px-4 py-2 bg-indigo-500 text-white rounded-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            [disabled]="registerForm.invalid"
+            >
+                Register
+            </button>
+        </div>
+    </form>
+</div>

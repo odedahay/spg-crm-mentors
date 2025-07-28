@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { CreatePostComponent } from './features/post/pages/create-post/create-post.component';
 import { DashboardComponent } from './features/dashboard/pages/dashboard/dashboard.component';
 import { EditPostComponent } from './features/post/pages/edit-post/edit-post.component';
+import { RegisterComponent } from './features/user/pages/register/register.component';
 
 export const routes: Routes = [
     {
@@ -20,5 +21,9 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent
+    },
+    {
+        path: 'register',
+        component: RegisterComponent
     }
 ];
