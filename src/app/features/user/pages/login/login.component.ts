@@ -55,7 +55,10 @@ export class LoginComponent {
         },
         error: (error) => {
           console.error(error.message);
-          this.errorMessage.set(error.message);
+
+          const cleanedMessage = error.message.replace(/^Firebase:\s*/i, '').trim();
+          this.toastr.error(cleanedMessage, 'Error');
+          this.errorMessage.set(cleanedMessage);
         }
     });
   }

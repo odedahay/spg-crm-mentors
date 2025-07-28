@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UserService } from '../../../../core/services/user.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,7 @@ export class LogoutComponent {
   userService = inject(UserService);
   router = inject(Router)
   toastr = inject(ToastrService);
+  errorMessage = signal<string | undefined>(undefined);
   
     constructor(){
       // call the Userservice

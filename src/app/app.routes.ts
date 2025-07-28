@@ -9,7 +9,7 @@ import { LogoutComponent } from './features/user/pages/logout/logout.component';
 export const routes: Routes = [
     {
         path: '',
-        component: DashboardComponent,
+        component: LoginComponent,
         pathMatch: 'full'
     },
     {
