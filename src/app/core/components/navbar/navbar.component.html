@@ -3,17 +3,17 @@
         <a [routerLink]="['/']">
             <img src="/assets/images/spg-logo.svg" alt="SPG Logo" class="w-[150px]">
         </a>
+        <div class="ms-auto flex items-center">
+            @if(userService.currentUser() === undefined){
 
-        @if(userService.isLoggedIn){
-            <div class="ms-auto flex items-center">
-                <app-logged-in-functionality></app-logged-in-functionality>
-            </div>
-        }@else {
-            <div class="ms-auto flex items-center">
-                <app-logged-out-functionality></app-logged-out-functionality>
-            </div>
-             
-        }
-        
+            <app-logged-out-functionality></app-logged-out-functionality>
+
+            }@else {
+
+            <app-logged-in-functionality [user]="userService.currentUser()!"></app-logged-in-functionality>
+            
+            }
+        </div>
+
     </div>
 </div>

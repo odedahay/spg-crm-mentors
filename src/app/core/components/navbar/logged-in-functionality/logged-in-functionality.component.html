@@ -4,7 +4,7 @@
     <div class="relative">
         <a class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"
             (click)="navBarService.toggleNavbarMenu()">
-            <span class="material-symbols-outlined">account_circle</span> Rodel
+            <span class="material-symbols-outlined">account_circle</span> {{ user().email}}
         </a>
         <ul class="min-w-[200px] absolute right-0 top-14 bg-neutral-50 border border-neutral-300 rounded"
             [class]="navBarService.hideUserMenu() ? 'hidden' : '' ">

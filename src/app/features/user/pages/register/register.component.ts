@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../../core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,7 @@ export class RegisterComponent {
 
   userService = inject(UserService);
   toastr = inject(ToastrService);
+  route = inject(Router)
   errorMessage = signal<string | undefined>(undefined);
 
   registerForm = new FormGroup({
@@ -42,6 +44,7 @@ export class RegisterComponent {
     this.userService.register(rawForm.email, rawForm.password).subscribe({
       next: ()=>{
         // Redirect to login page
+        this.route.navigateByUrl('/dashboard');
         this.toastr.success("Successfully Register", "Success");
       },error:(error)=>{
         console.error(error.message);
