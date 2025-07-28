@@ -12,4 +12,5 @@ export interface MentorPost{
     profileImageUrl: string;
     status: string;
     publishedOn:Timestamp;
+    userId: string;
 }

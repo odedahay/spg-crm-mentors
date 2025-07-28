@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy, doc, docData, deleteDoc } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { MentorPost } from '../models/mentorpost.model';
+import { UserService } from '../../../core/services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class MentorpostService {
   constructor() { }
 
   firestore = inject(Firestore);
+  userService = inject(UserService);
 
   createMentorPost(
     firstname:string,
@@ -26,6 +28,7 @@ export class MentorpostService {
     // addDoc
     // Firebase define ID
     const postCollectionReference = collection(this.firestore, 'mentor-post');
+
     addDoc(postCollectionReference, {
       firstname: firstname,
       lastname: lastname,
@@ -37,6 +40,7 @@ export class MentorpostService {
       profileImageUrl: profileImageUrl,
       status:status,
       publishedOn: new Date(),
+      userId: this.userService.currentUser()?.id
     })
 
     // setDoc
@@ -81,6 +85,7 @@ export class MentorpostService {
       profileImageUrl: profileImageUrl,
       status:status,
       publishedOn: new Date(),
+      userId: this.userService.currentUser()?.id
     });
   }
 
