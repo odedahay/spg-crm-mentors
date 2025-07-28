@@ -80,9 +80,10 @@ export class CreatePostComponent {
         this.createPostForm.getRawValue().profileImageUrl,
         this.createPostForm.getRawValue().status,
     );
-    alert('Mentor Saved Successfully');
+    //alert('Mentor Saved Successfully');
     this.createPostForm.reset();
     this.router.navigateByUrl('/dashboard');
+    this.toastr.success('Mentor Saved Successfully', 'Success');
   }
 
   onProfileImageSelected(input: HTMLInputElement){

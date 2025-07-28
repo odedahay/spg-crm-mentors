@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { NavbarService } from '../../../services/navbar.service';
 import { RouterLink } from '@angular/router';
 
@@ -10,4 +10,12 @@ import { RouterLink } from '@angular/router';
 })
 export class LoggedInFunctionalityComponent {
   navBarService = inject(NavbarService);
+  eRef = inject(ElementRef);
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: Event){
+    if(!this.eRef.nativeElement.contains(event.target)){
+      this.navBarService.closeUserMenu();
+    }
+  }
 }
