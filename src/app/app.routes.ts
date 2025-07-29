@@ -5,6 +5,7 @@ import { EditPostComponent } from './features/post/pages/edit-post/edit-post.com
 import { RegisterComponent } from './features/user/pages/register/register.component';
 import { LoginComponent } from './features/user/pages/login/login.component';
 import { LogoutComponent } from './features/user/pages/logout/logout.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -15,14 +16,17 @@ export const routes: Routes = [
     {
         path: 'create-post',
         component: CreatePostComponent,
+        canMatch: [authGuard]
     },
     {
         path: 'edit-post/:id',
         component: EditPostComponent,
+        canMatch: [authGuard]
     },
     {
         path: 'dashboard',
         component: DashboardComponent,
+        canMatch: [authGuard]
     },
     {
         path: 'register',
