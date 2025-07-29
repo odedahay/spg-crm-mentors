@@ -10,6 +10,14 @@
     <form [formGroup]="createPostForm" (ngSubmit)="onFormSubmit()">
         <div class="grid grid-cols-12 gap-6">
             <div class="col-span-10">
+                <div class="grid grid-cols-2 gap-4 mt-5">
+                    <!-- @if(isFollowUpDue(post)){
+                        <div class="" class="text-red-500">
+                            Follow-up needed
+                          </div>
+                    }
+                     -->
+                </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="">
                         <label for="firstname" class="w-full">Firt Name <span class="text-red-500">*</span></label>
@@ -99,22 +107,32 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 mt-5">
+                <div class="grid grid-cols-2 gap-6 mt-5">
                     <div class="">
                         <label for="status" class="w-full">Status <span class="text-red-500">*</span></label>
                         <select id="status" class="bg-neutral-100 w-full px-4 py-2 mt-2" formControlName="status">
-                            <option>Please select</option>
                             <option value="In-Progress">In-Progress</option>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
                         @if(status.invalid && (status.dirty || status.touched)){
-                        @if(status.hasError('required')) {
-                        <p class="text-red-500">Status is required</p>
-                        }
+                            @if(status.hasError('required')) {
+                            <p class="text-red-500">Status is required</p>
+                            }
                         }
                     </div>
+                    <div>
+                        <label for="followUpInterval" class="w-full">Follow-up Interval <span class="text-red-500">*</span></label>
+                        <select id="followUpInterval" class="bg-neutral-100 w-full px-4 py-2 mt-2"
+                            formControlName="followUpInterval">
+                            <option value="14">2 Weeks</option>
+                            <option value="28">4 Weeks</option>
+                            <option value="30">1 Month</option>
+                            <option value="60">2 Months</option>
+                        </select>
+                    </div>
                 </div>
+
                 <div class="mt-5">
                     <button type="submit" class="px-4 py-2 rounded bg-indigo-500 text-white disabled:opacity-50"
                         [disabled]="createPostForm.valid === false">
@@ -128,7 +146,7 @@
                 <div>
                     <input type="file" class="hidden" accept="image/*"
                         (change)="onProfileImageSelected(profileImageInput)" #profileImageInput>
-                    
+
                     @if(imageTypeError){
                     <div class="text-red-500 mt-2">Only image files (.jpg, .jpeg, .png, .gif, .webp, .bmp, .svg, .ico,
                         .heic, .heif) are allowed.</div>
@@ -147,19 +165,22 @@
                     </div>
                     }
                     @if(!isUploadingImage){
-                        <button class="border border-indigo-500 text-indigo-500 rounded-full px-4 py-2 mt-2 flex items-center" (click)="profileImageInput.click()">
-                            <span class="material-symbols-outlined">add</span> Profile Image
-                        </button>
+                    <button
+                        class="border border-indigo-500 text-indigo-500 rounded-full px-4 py-2 mt-2 flex items-center"
+                        (click)="profileImageInput.click()">
+                        <span class="material-symbols-outlined">add</span> Profile Image
+                    </button>
                     }
 
                     @if(isUploadingImage){
-                        <div class="flex items-center gap-2 text-blue-500 mt-2">
+                    <div class="flex items-center gap-2 text-blue-500 mt-2">
                         <svg class="animate-spin h-5 w-5 text-blue-500" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
+                                fill="none" />
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                         </svg>
                         Uploading image
-                        </div>
+                    </div>
                     }
                 </div>
             </div>

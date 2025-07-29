@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { DashboardStatisticsComponent } from "../../components/dashboard-statistics/dashboard-statistics.component";
@@ -16,44 +16,65 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
   mentorPostService = inject(MentorpostService);
   toastr = inject(ToastrService);
 
   mentorPosts = toSignal(this.mentorPostService.getMentorPosts());
+  mentorPostsLoading = signal<MentorPost[] | undefined>(undefined);
   searchQuery = signal('');
   currentPage = signal(1);
   itemsPerPage = 10;
 
-  totalMentors = computed(()=>{
+  ngOnInit(): void {
+    this.loadMentors();
+  }
+
+
+  loading = true;
+  loadMentors(){
+    this.loading = true;
+    this.mentorPostService.getMentorPosts().subscribe({
+      next: (data) =>{
+        this.mentorPostsLoading.set(data);
+        this.loading = false;
+      },
+      error:()=>{
+        this.loading = false;
+      }
+    })
+  }
+ 
+
+  totalMentors = computed(() => {
     return this.mentorPosts()?.length ?? 0;
   });
 
-  totalActiveMentors = computed(()=>{
+  totalActiveMentors = computed(() => {
     return this.mentorPosts()?.filter(post => post.status === 'Active').length ?? 0;
   });
 
-  totalInactiveMentors = computed(()=>{
+  totalInactiveMentors = computed(() => {
     return this.mentorPosts()?.filter(post => post.status === 'Inactive').length ?? 0;
   });
 
-  totalInProgressMentors = computed(()=>{
+  totalInProgressMentors = computed(() => {
     return this.mentorPosts()?.filter(post => post.status === 'In-Progress').length ?? 0;
   });
 
   filteredMentorPosts = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     const posts = this.mentorPosts() ?? [];
-    
+
     if (!query) {
       return posts;
     }
-    
+
     return posts.filter((post) => {
       return post.firstname.toLowerCase().includes(query) ||
-             post.lastname.toLowerCase().includes(query) ||
-             post.program.toLowerCase().includes(query);
+        post.lastname.toLowerCase().includes(query) ||
+        post.program.toLowerCase().includes(query);
     });
   });
 
@@ -72,7 +93,7 @@ export class DashboardComponent {
     const total = this.totalPages();
     const current = this.currentPage();
     const pages: number[] = [];
-    
+
     if (total <= 7) {
       // Show all pages if 7 or fewer
       for (let i = 1; i <= total; i++) {
@@ -105,7 +126,7 @@ export class DashboardComponent {
         pages.push(total);
       }
     }
-    
+
     return pages;
   });
 
@@ -117,8 +138,8 @@ export class DashboardComponent {
     return Math.min(this.currentPage() * this.itemsPerPage, this.filteredMentorPosts().length);
   });
 
-  convertTimestampToDate(timestamp: Timestamp){
-    return timestamp.toDate(); 
+  convertTimestampToDate(timestamp: Timestamp) {
+    return timestamp.toDate();
   }
 
   onImageError(event: Event) {
@@ -134,7 +155,7 @@ export class DashboardComponent {
       'Active': 'bg-green-100 text-green-700 ring-green-600/20',
       'Inactive': 'bg-gray-200 text-gray-600 ring-gray-500/10'
     };
-    
+
     return statusClasses[status] || 'bg-gray-50 text-gray-600 ring-gray-500/10';
   }
 
@@ -165,7 +186,7 @@ export class DashboardComponent {
     return page;
   }
 
-  downloadExcel(){
+  downloadExcel() {
     this.mentorPostService.getMentorPosts().subscribe((data: MentorPost[]) => {
       const worksheet = XLSX.utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
@@ -175,6 +196,42 @@ export class DashboardComponent {
     })
     // alert('Successfully download');
     this.toastr.success('Successfully download', 'Success');
+  }
+
+  isFollowUpDue(post: MentorPost): boolean {
+    if (!post.createdAt || !post.followUpInterval) return false;
+
+    const createdDate = new Date(post.createdAt);
+    const now = new Date();
+
+    // followUpInterval is expected in days
+    const diffInMs = now.getTime() - createdDate.getTime();
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24); // is used to convert days into milliseconds
+
+    return diffInDays >= post.followUpInterval;
+  }
+
+  // getFollowUpDueDate(createdAt: string, intervalDays: number): Date {
+  //   const created = new Date(createdAt);
+  //   return new Date(created.getTime() + intervalDays * 24 * 60 * 60 * 1000);
+  // }
+
+  // converted to Firestore
+
+  getFollowUpDueDate(createdAt: string | Timestamp | undefined, intervalDays: number): Date | null {
+    if (!createdAt) return null;
+
+    let createdDate: Date;
+
+    if (typeof createdAt === 'string') {
+      createdDate = new Date(createdAt);
+    } else if (createdAt instanceof Timestamp) {
+      createdDate = createdAt.toDate();
+    } else {
+      return null;
+    }
+
+    return new Date(createdDate.getTime() + intervalDays * 24 * 60 * 60 * 1000);
   }
 
 }

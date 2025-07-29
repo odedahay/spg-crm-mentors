@@ -24,6 +24,8 @@ export class MentorpostService {
     note: string,
     profileImageUrl: string,
     status: string,
+    createdAt: string,
+    followUpInterval: number,
   ){
     // addDoc
     // Firebase define ID
@@ -40,6 +42,8 @@ export class MentorpostService {
       profileImageUrl: profileImageUrl,
       status:status,
       publishedOn: new Date(),
+      createdAt: createdAt,
+      followUpInterval: followUpInterval,
       userId: this.userService.currentUser()?.id
     })
 
@@ -119,5 +123,3 @@ export class MentorpostService {
   //   return collectionData(mentorPostCollectionRef, { idField: 'id' }) as Observable<MentorPost[]>;
   // }
 }
-
- 

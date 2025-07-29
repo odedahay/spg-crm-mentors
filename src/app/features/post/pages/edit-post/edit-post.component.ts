@@ -183,7 +183,7 @@ export class EditPostComponent implements OnInit{
     .subscribe({
       next: ()=>{
         this.router.navigateByUrl('/dashboard');
-        this.toastr.success('Succesfully saved', 'Success');
+        this.toastr.warning('Succesfully deleted', 'Warning');
       }
     })
   }

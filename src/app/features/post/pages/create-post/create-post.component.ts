@@ -6,6 +6,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { ImageService } from '../../../../shared/services/image.service';
 import { getDownloadURL } from '@angular/fire/storage';
 import { ToastrService } from 'ngx-toastr';
+import { MentorPost } from '../../models/mentorpost.model';
 
 
 @Component({
@@ -26,59 +27,63 @@ export class CreatePostComponent {
   isUploadingImage: boolean = false;
 
   createPostForm = new FormGroup({
-    firstname: new FormControl<string>('', { nonNullable: true, validators:[Validators.required] }),
+    firstname: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     lastname: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
-    email: new FormControl<string>('', {nonNullable: true, validators: [Validators.required,Validators.email]}),
-    phoneNumber: new FormControl<string>('', {nonNullable: true}),
-    program: new FormControl<string>('', { nonNullable: true, validators: [Validators.required]}),
-    numOfMentor: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
-    note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(3000)]}),
-    profileImageUrl: new FormControl<string>('assets/images/default-avatar.png', { nonNullable: true}),
-    status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
+    email: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    phoneNumber: new FormControl<string>('', { nonNullable: true }),
+    program: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    numOfMentor: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(3000)] }),
+    profileImageUrl: new FormControl<string>('assets/images/default-avatar.png', { nonNullable: true }),
+    status: new FormControl<string>('In-Progress', { nonNullable: true, validators: [Validators.required] }),
+    createdAt: new FormControl<string>(new Date().toISOString(), { nonNullable: true }),
+    followUpInterval: new FormControl<number>(14, { nonNullable: true, validators: [Validators.required] }), // default 2 Weeks
   });
 
-  get firstname(){
+  get firstname() {
     return this.createPostForm.controls.firstname
   }
-  get lastname(){
+  get lastname() {
     return this.createPostForm.controls.lastname
   }
 
-  get email(){
+  get email() {
     return this.createPostForm.controls.email
   }
 
-  get program(){
+  get program() {
     return this.createPostForm.controls.program
   }
 
-  get numOfMentor(){
+  get numOfMentor() {
     return this.createPostForm.controls.numOfMentor
   }
 
-  get note(){
+  get note() {
     return this.createPostForm.controls.note
   }
 
-  get status(){
+  get status() {
     return this.createPostForm.controls.status
   }
 
-  onFormSubmit(){
-    if(this.createPostForm.invalid){
+  onFormSubmit() {
+    if (this.createPostForm.invalid) {
       return;
     }
 
     this.mentorPostService.createMentorPost(
-        this.createPostForm.getRawValue().firstname,
-        this.createPostForm.getRawValue().lastname,
-        this.createPostForm.getRawValue().email,
-        this.createPostForm.getRawValue().phoneNumber,
-        this.createPostForm.getRawValue().program,
-        this.createPostForm.getRawValue().numOfMentor,
-        this.createPostForm.getRawValue().note,
-        this.createPostForm.getRawValue().profileImageUrl,
-        this.createPostForm.getRawValue().status,
+      this.createPostForm.getRawValue().firstname,
+      this.createPostForm.getRawValue().lastname,
+      this.createPostForm.getRawValue().email,
+      this.createPostForm.getRawValue().phoneNumber,
+      this.createPostForm.getRawValue().program,
+      this.createPostForm.getRawValue().numOfMentor,
+      this.createPostForm.getRawValue().note,
+      this.createPostForm.getRawValue().profileImageUrl,
+      this.createPostForm.getRawValue().status,
+      this.createPostForm.getRawValue().createdAt,
+      this.createPostForm.getRawValue().followUpInterval
     );
     //alert('Mentor Saved Successfully');
     this.createPostForm.reset();
@@ -86,8 +91,8 @@ export class CreatePostComponent {
     this.toastr.success('Mentor Saved Successfully', 'Success');
   }
 
-  onProfileImageSelected(input: HTMLInputElement){
-    if(!input.files || input.files.length <= 0){
+  onProfileImageSelected(input: HTMLInputElement) {
+    if (!input.files || input.files.length <= 0) {
       return;
     }
 
@@ -111,9 +116,9 @@ export class CreatePostComponent {
       return;
 
     } else {
-      
+
       this.imageTypeError = false;
-    
+
     }
 
     // File size validation (2MB max)
@@ -122,19 +127,19 @@ export class CreatePostComponent {
     if (file.size > maxSize) {
       this.imageSizeError = true;
       input.value = '';
-    
+
       return;
-    
+
     } else {
-    
+
       this.imageSizeError = false;
-    
+
     }
 
     this.isUploadingImage = true; // Start loading
 
-    this.imageService.uploadImage(file.name, file).then((snapshot)=>{
-      getDownloadURL(snapshot.ref).then((downLoadUrl)=>{
+    this.imageService.uploadImage(file.name, file).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downLoadUrl) => {
 
         this.createPostForm.patchValue({
           profileImageUrl: downLoadUrl
@@ -149,5 +154,17 @@ export class CreatePostComponent {
     }).catch(() => {
       this.isUploadingImage = false; // Stop loading on error
     });
+  }
+
+  isFollowUpDue(post: MentorPost): boolean {
+    if (!post.createdAt || !post.followUpInterval) return false;
+
+    const created = new Date(post.createdAt);
+    const now = new Date();
+
+    const intervalDays = post.followUpInterval; // value already represents days
+    const diffDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+
+    return diffDays >= intervalDays;
   }
 }

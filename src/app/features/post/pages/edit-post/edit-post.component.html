@@ -11,12 +11,26 @@
     <form [formGroup]="editPostForm" (ngSubmit)="onFormSubmit()">
         <div class="grid grid-cols-12 gap-6">
             <div class="col-span-10">
-                <div class="grid grid-cols-1 mt-5">
+                <div class="grid grid-cols-2 gap-4 mt-5">
                     <div class="">
                         <label for="status" class="w-full">ID <span class="text-red-500">*</span></label>
                         <input type="text" class="bg-neutral-100 w-full px-4 py-2 mt-2 placeholder-neutral-400"
                             placeholder="Enter First Name" autocomplete="off" formControlName="id" readonly>
                     </div>
+                    <!-- <div class="">
+                        <label for="status" class="w-full">Notify</label>
+                        <select id="status" class="bg-neutral-100 w-full px-4 py-2 mt-2" formControlName="notification">
+                            <option>Please select</option>
+                            <option value="In-Progress">2 Weeks</option>
+                            <option value="Active">4 Weeks</option>
+                            <option value="Inactive">6 Weeks</option>
+                        </select>
+                        @if(status.invalid && (status.dirty || status.touched)){
+                        @if(status.hasError('required')) {
+                        <p class="text-red-500">Status is required</p>
+                        }
+                        }
+                    </div> -->
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-5">
                     <div class="">
