@@ -10,9 +10,8 @@ import { authGuard } from './core/guards/auth.guard'
 export const routes: Routes = [
     {
         path: '',
-        component: DashboardComponent,
+        component: LoginComponent,
         pathMatch: 'full',
-        canActivate: [authGuard]
     },
     {
         path: 'create-post',
