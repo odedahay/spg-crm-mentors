@@ -10,23 +10,20 @@ import { authGuard } from './core/guards/auth.guard'
 export const routes: Routes = [
     {
         path: '',
-        component: LoginComponent,
-        pathMatch: 'full',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
     },
     {
         path: 'create-post',
         component: CreatePostComponent,
-        canActivate: [authGuard]
     },
     {
         path: 'edit-post/:id',
         component: EditPostComponent,
-        canActivate: [authGuard]
     },
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [authGuard]
     },
     {
         path: 'register',

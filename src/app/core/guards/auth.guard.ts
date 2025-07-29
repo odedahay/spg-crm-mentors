@@ -1,14 +1,20 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanMatchFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService) as AuthService;
+export const authGuard: CanMatchFn = () => {
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  const isLoggedIn = authService.isAuthenticated();
+  const authResolved = authService.authResolved;
+  const currentUser = authService.currentUser;
 
-  if (!isLoggedIn) {
+  if (!authResolved()) {
+    // Block route matching until auth is resolved
+    return false;
+  }
+
+  if (!currentUser()) {
     router.navigate(['/login']);
     return false;
   }
