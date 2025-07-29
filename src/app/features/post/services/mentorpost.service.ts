@@ -75,6 +75,8 @@ export class MentorpostService {
     note: string,
     profileImageUrl: string,
     status: string,
+    createdAt: string,
+    followUpInterval: number,
   ){
     // setDoc - define your own ID
     const postCollectionReference = doc(this.firestore, 'mentor-post', id);
@@ -88,6 +90,8 @@ export class MentorpostService {
       note: note,
       profileImageUrl: profileImageUrl,
       status:status,
+      createdAt: createdAt,
+      followUpInterval: followUpInterval,
       publishedOn: new Date(),
       userId: this.userService.currentUser()?.id
     });

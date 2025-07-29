@@ -41,7 +41,8 @@ export class EditPostComponent implements OnInit{
           numOfMentor: mentorPost.numOfMentor,
           note: mentorPost.note,
           profileImageUrl: mentorPost.profileImageUrl,
-          status: mentorPost.status
+          status: mentorPost.status,
+          followUpInterval: mentorPost.followUpInterval
         });
       }
     })
@@ -57,7 +58,9 @@ export class EditPostComponent implements OnInit{
     numOfMentor: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
     note: new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(3000)]}),
     profileImageUrl: new FormControl<string>('assets/images/default-avatar.png', { nonNullable: true}),
-    status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]})
+    status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
+    createdAt: new FormControl<string>(new Date().toISOString(), { nonNullable: true }),
+    followUpInterval: new FormControl<number>(14, { nonNullable: true, validators: [Validators.required] }), // default 2 Weeks
   });
 
   get firstname(){
@@ -170,7 +173,9 @@ export class EditPostComponent implements OnInit{
       rawValue.numOfMentor,
       rawValue.note,
       rawValue.profileImageUrl,
-      rawValue.status
+      rawValue.status,
+      rawValue.createdAt,
+      rawValue.followUpInterval
     );
 
     //alert('Successfully Saved');
