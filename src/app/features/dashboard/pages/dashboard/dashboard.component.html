@@ -43,36 +43,39 @@
     <div class="mentors--dat">
       <div class="mt-8 mb-8">
         <table class="table-fixed w-full border-collapse">
-          <thead>
+          <thead class="bg-gray-100 border-b-2 border-gray-200">
             <tr>
               <!-- <th class="px-4 py-2 text-left">Tracking ID</th> -->
-              <th class="px-4 py-2 text-left">Profile Image</th>
               <th class="px-4 py-2 text-left">Mentor</th>
-              <th class="px-4 py-2 text-left">Program</th>
-              <th class="px-4 py-2 text-left">No of Member</th>
-              <th class="px-4 py-2 text-left">Date</th>
-              <th class="px-4 py-2 text-left">Status</th>
-              <th class="px-4 py-2 text-left">Follow Up</th>
-              <th class="px-4 py-2 text-left">Action</th>
+              <th class="w-60 px-4 py-2 text-left">Email</th>
+              <th class="w-60 px-4 py-2 text-left">Program</th>
+              <th class="w-45 px-4 py-2 text-left">No of Member</th>
+              <th class="w-45 px-4 py-2 text-left">Date Created</th>
+              <th class="w-45 px-4 py-2 text-left">Status</th>
+              <th class="w-45 px-4 py-2 text-left">Date To Follow Up</th>
+              <th class="w-25 px-4 py-2 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             @for(mentorPost of paginatedMentorPosts(); track mentorPost.id){
             <tr class="even:bg-neutral-100">
               <!-- <td class="border border-neutral-100 px-4 py-2">{{mentorPost.id}}</td> -->
-              <td class="border border-neutral-100 px-4 py-2">
+              
+              <td class="border border-neutral-100 px-4 py-2 flex items-center gap-2">
                 <img [src]="mentorPost.profileImageUrl || 'assets/images/default-avatar.png'"
-                  class="w-[60px] h-[60px] object-cover rounded-full" [alt]="mentorPost.firstname"
-                  (error)="onImageError($event)" />
+                class="w-[30px] h-[30px] object-cover rounded-full" [alt]="mentorPost.firstname"
+                (error)="onImageError($event)" /> {{mentorPost.firstname}} {{mentorPost.lastname}}
               </td>
-              <td class="border border-neutral-100 px-4 py-2">{{mentorPost.firstname}} {{mentorPost.lastname}}</td>
+              <td class="border border-neutral-100 px-4 py-2">
+                {{mentorPost.email}}
+              </td>
               <td class="border border-neutral-100 px-4 py-2">{{mentorPost.program}}</td>
               <td class="border border-neutral-100 px-4 py-2">{{mentorPost.numOfMentor}}</td>
               <td class="border border-neutral-100 px-4 py-2">{{convertTimestampToDate(mentorPost.publishedOn) |
                 date:'dd-MM-yyyy' }}</td>
               <td class="border border-neutral-100 px-4 py-2">
                 <span
-                  class="inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-30"
+                  class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-30"
                   [class]="getStatusBadgeClass(mentorPost.status)">
                   {{mentorPost.status}}
                 </span>
@@ -80,17 +83,17 @@
               <td class="border border-neutral-100 px-4 py-2">
                 @if(isFollowUpDue(mentorPost)){
                 <span
-                  class="inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-red-200 text-red-800 ring-gray-500/10">
+                  class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-red-200 text-red-800 ring-gray-500/10">
                   Follow-up needed
                 </span>
                 }@else {
 
                 <span
-                  class="inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-gray-100 text-gray-600 ring-gray-500/10">
+                  class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-gray-100 text-gray-600 ring-gray-500/10">
                   @if(getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) == undefined){
                   Update the Follow Up Date
                   }@else {
-                  Follow-up due on {{ getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) |
+                  Due on {{ getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) |
                   date:'dd-MM-yyyy' }}
                   }
 
