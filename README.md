@@ -15,18 +15,31 @@
 - **Signal-based State Management** – For reactive and scalable component logic.
 - **RxJS** – For handling asynchronous data streams.
 - **XLSX (SheetJS)** – For exporting mentor data to Excel files.
-- **Chart.js (optional)** – For visualizing mentoring trends (if implemented).
+- **Chart.js** – For visualizing mentoring trends and statistics.
+- **Ngx-Toastr** – For user notifications and feedback.
 
 ## ✨ Key Features
 
-- Mentor registration and editing
-- Mentor listing with real-time filtering and pagination
-- Image upload and profile display
-- Firebase Auth integration
-- Excel export for reporting
-- Mobile-responsive design
+- Mentor registration, editing, and deletion
+- Mentor listing with real-time filtering, search, and smart pagination
+- Image upload and profile display with fallback for missing images
+- Firebase Auth integration for secure access
+- Excel export for reporting and data backup
+- Mobile-responsive design for all devices
+- Dashboard with mentor statistics and activity overview
+- Follow-up tracking with due date calculation and status badges
+- Real-time updates when navigating between dashboard and other pages
+- Error handling and user-friendly notifications
 
+## 🆕 Latest Updates
+
+- Improved type safety and Firestore timestamp handling
+- Enhanced follow-up tracking with clear status indicators (due, stopped, scheduled)
+- Smart pagination with ellipsis for large mentor lists
+- Download mentor data as Excel with formatted dates and status
+- Bug fixes for image loading and date conversion
+- Performance improvements for large datasets
 
 ## 📄 License
 
-MIT License © 2025 SPG CRM Development
+MIT License © 2025 SPG
