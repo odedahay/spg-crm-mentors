@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy, doc, docData, deleteDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore, setDoc, query, orderBy, doc, docData, deleteDoc, Timestamp } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { MentorPost } from '../models/mentorpost.model';
 import { UserService } from '../../../core/services/user.service';
@@ -31,6 +31,7 @@ export class MentorpostService {
     // Firebase define ID
     const postCollectionReference = collection(this.firestore, 'mentor-post');
 
+    const currentDate = new Date();
     addDoc(postCollectionReference, {
       firstname: firstname,
       lastname: lastname,
@@ -41,9 +42,10 @@ export class MentorpostService {
       note: note,
       profileImageUrl: profileImageUrl,
       status:status,
-      publishedOn: new Date(),
       createdAt: createdAt,
       followUpInterval: followUpInterval,
+      publishedOn: currentDate, // Set creation date for new posts
+      lastUpdated: currentDate, // Set initial lastUpdated to same as publishedOn for new posts
       userId: this.userService.currentUser()?.id
     })
 
@@ -77,9 +79,27 @@ export class MentorpostService {
     status: string,
     createdAt: string,
     followUpInterval: number,
+    publishedOn: Timestamp | Date | any // Keep the original publishedOn date
   ){
     // setDoc - define your own ID
     const postCollectionReference = doc(this.firestore, 'mentor-post', id);
+    
+    // Ensure publishedOn is properly preserved as a Firestore-compatible date
+    let preservedPublishedOn = publishedOn;
+    if (publishedOn instanceof Timestamp) {
+      // If it's already a Timestamp, keep it as is
+      preservedPublishedOn = publishedOn;
+    } else if (publishedOn instanceof Date) {
+      // If it's a Date, keep it as is (Firestore will convert it)
+      preservedPublishedOn = publishedOn;
+    } else if (typeof publishedOn === 'string') {
+      // If it's a string, convert to Date
+      preservedPublishedOn = new Date(publishedOn);
+    } else {
+      // Fallback to current date if something goes wrong
+      preservedPublishedOn = new Date();
+    }
+
     setDoc(postCollectionReference, {
       firstname: firstname,
       lastname: lastname,
@@ -92,7 +112,8 @@ export class MentorpostService {
       status:status,
       createdAt: createdAt,
       followUpInterval: followUpInterval,
-      publishedOn: new Date(),
+      publishedOn: preservedPublishedOn, // Preserve original creation date with proper type
+      lastUpdated: new Date(), // Only update the lastUpdated field
       userId: this.userService.currentUser()?.id
     });
   }
@@ -100,7 +121,9 @@ export class MentorpostService {
   // Return collection
   getMentorPosts(): Observable<MentorPost[]> {
     const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');
-    const q = query(mentorPostCollectionRef, orderBy('publishedOn', 'desc'));
+    // Order by lastUpdated if it exists, otherwise by publishedOn
+    // This will show recently updated posts at the top
+    const q = query(mentorPostCollectionRef, orderBy('lastUpdated', 'desc'));
     
     return collectionData(q, { idField: 'id' }) as Observable<MentorPost[]>;
   }

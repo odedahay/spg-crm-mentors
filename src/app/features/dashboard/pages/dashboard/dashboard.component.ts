@@ -208,7 +208,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   downloadExcel() {
     this.mentorPostService.getMentorPosts().subscribe((data: MentorPost[]) => {
-      const worksheet = XLSX.utils.json_to_sheet(data);
+      // Transform data for Excel with proper formatting and column headers
+      const excelData = data.map(post => ({
+        'First Name': post.firstname,
+        'Last Name': post.lastname,
+        'Email': post.email,
+        'Phone Number': post.phoneNumber,
+        'Program': post.program,
+        'Number of Members': post.numOfMentor,
+        'Status': post.status,
+        'Date Created': post.publishedOn ? this.convertTimestampToDate(post.publishedOn).toLocaleDateString('en-GB') : '',
+        'Last Updated': post.lastUpdated ? this.convertTimestampToDate(post.lastUpdated).toLocaleDateString('en-GB') : 'Not updated',
+        'Follow Up Interval (Days)': post.followUpInterval === -1 ? 'Stopped' : post.followUpInterval,
+        'Notes': post.note
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
       const workbook = XLSX.utils.book_new();
 
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Mentors');

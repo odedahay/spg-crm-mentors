@@ -15,4 +15,5 @@ export interface MentorPost{
     userId: string;
     createdAt: string; // ISO string date
     followUpInterval: number; // e.g., 2 or 3
+    lastUpdated?: Timestamp; 
 }

@@ -42,7 +42,8 @@ export class EditPostComponent implements OnInit{
           note: mentorPost.note,
           profileImageUrl: mentorPost.profileImageUrl,
           status: mentorPost.status,
-          followUpInterval: mentorPost.followUpInterval
+          followUpInterval: mentorPost.followUpInterval,
+          publishedOn: mentorPost.publishedOn // Store original publishedOn
         });
       }
     })
@@ -61,6 +62,7 @@ export class EditPostComponent implements OnInit{
     status: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
     createdAt: new FormControl<string>(new Date().toISOString(), { nonNullable: true }),
     followUpInterval: new FormControl<number>(14, { nonNullable: true, validators: [Validators.required] }), // default 2 Weeks
+    publishedOn: new FormControl<any>(null, { nonNullable: false }), // Store original publishedOn
   });
 
   get firstname(){
@@ -175,7 +177,8 @@ export class EditPostComponent implements OnInit{
       rawValue.profileImageUrl,
       rawValue.status,
       rawValue.createdAt,
-      rawValue.followUpInterval
+      rawValue.followUpInterval,
+      rawValue.publishedOn // Pass the original publishedOn date
     );
 
     // Navigate back to dashboard and show success message

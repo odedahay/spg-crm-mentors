@@ -50,7 +50,8 @@
               <th class="w-60 px-4 py-2 text-left">Email</th>
               <th class="w-60 px-4 py-2 text-left">Program</th>
               <th class="w-45 px-4 py-2 text-left">No of Member</th>
-              <th class="w-45 px-4 py-2 text-left">Date Created</th>
+              <th class="w-45 px-4 py-2 text-left">Published</th>
+              <th class="w-30 px-4 py-2 text-left">Last Updated</th>
               <th class="w-45 px-4 py-2 text-left">Status</th>
               <th class="w-45 px-4 py-2 text-left">Date To Follow Up</th>
               <th class="w-25 px-4 py-2 text-left">Action</th>
@@ -74,6 +75,13 @@
               <td class="border border-neutral-100 px-4 py-3" whitespace-nowrap>
                 {{convertTimestampToDate(mentorPost.publishedOn) |
                 date:'dd-MM-yyyy' }}</td>
+              <td class="border border-neutral-100 px-4 py-3" whitespace-nowrap>
+                @if(mentorPost.lastUpdated) {
+                  {{convertTimestampToDate(mentorPost.lastUpdated) | date:'dd-MM-yyyy'}}
+                } @else {
+                  <span class="text-gray-400">Not updated</span>
+                }
+              </td>
               <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">
                 <span
                   class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-30"
