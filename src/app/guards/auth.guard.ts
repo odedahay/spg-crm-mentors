@@ -19,9 +19,9 @@ export const authGuard: CanMatchFn = () => {
         });
         resolve(true);
       } else {
+        // toastr.error('Authorised access only', 'Error');
         router.navigate(['/login']);
         resolve(false);
-        toastr.error('Authorised access only', 'Error');
       }
     });
   });
