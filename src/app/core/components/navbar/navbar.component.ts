@@ -5,10 +5,11 @@ import { LoggedOutFunctionalityComponent } from './logged-out-functionality/logg
 import { LoggedInFunctionalityComponent } from './logged-in-functionality/logged-in-functionality.component';
 import { User as FireAuthUser } from '@angular/fire/auth';
 import { User } from '../../models/user.model';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, LoggedOutFunctionalityComponent, LoggedInFunctionalityComponent],
+  imports: [RouterLink, LoggedOutFunctionalityComponent, LoggedInFunctionalityComponent, SidebarComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

@@ -126,4 +126,17 @@ export class MentorpostService {
   //   const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');
   //   return collectionData(mentorPostCollectionRef, { idField: 'id' }) as Observable<MentorPost[]>;
   // }
+   isFollowUpDue(post: MentorPost): boolean {
+    if (!post.createdAt || !post.followUpInterval) return false;
+
+    const createdDate = typeof post.createdAt === 'string'
+      ? new Date(post.createdAt)
+      : (post.createdAt as any).toDate();
+
+    const now = new Date();
+    const diffInDays = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    return diffInDays >= post.followUpInterval;
+  }
+
 }

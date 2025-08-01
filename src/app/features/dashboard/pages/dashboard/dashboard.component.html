@@ -66,22 +66,22 @@
                   class="w-[30px] h-[30px] object-cover rounded-full" [alt]="mentorPost.firstname"
                   (error)="onImageError($event)" /> {{mentorPost.firstname}} {{mentorPost.lastname}}
               </td>
-              <td class="border border-neutral-100 px-4 py-2 whitespace-nowrap">
+              <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">
                 {{mentorPost.email}}
               </td>
-              <td class="border border-neutral-100 px-4 py-2" whitespace-nowrap>{{mentorPost.program}}</td>
-              <td class="border border-neutral-100 px-4 py-2" whitespace-nowrap>{{mentorPost.numOfMentor}}</td>
-              <td class="border border-neutral-100 px-4 py-2" whitespace-nowrap>
+              <td class="border border-neutral-100 px-4 py-3" whitespace-nowrap>{{mentorPost.program}}</td>
+              <td class="border border-neutral-100 px-4 py-3" whitespace-nowrap>{{mentorPost.numOfMentor}}</td>
+              <td class="border border-neutral-100 px-4 py-3" whitespace-nowrap>
                 {{convertTimestampToDate(mentorPost.publishedOn) |
                 date:'dd-MM-yyyy' }}</td>
-              <td class="border border-neutral-100 px-4 py-2 whitespace-nowrap">
+              <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">
                 <span
                   class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-30"
                   [class]="getStatusBadgeClass(mentorPost.status)">
                   {{mentorPost.status}}
                 </span>
               </td>
-              <td class="border border-neutral-100 px-4 py-2 whitespace-nowrap">
+              <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">
                 @if(isFollowUpDue(mentorPost)){
                 <span
                   class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-red-200 text-red-800 ring-gray-500/10">
@@ -105,7 +105,7 @@
                     </span> -->
                 }
               </td>
-              <td class="border border-neutral-100 px-4 py-2 whitespace-nowrap">
+              <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">
                 <a [routerLink]="['/edit-post', mentorPost.id]" class="flex items-center">
                   <span class="material-symbols-outlined me-1 text-indigo-500" title="Edit">edit</span> <span
                     class="text-xs text-indigo-500">Edit</span>

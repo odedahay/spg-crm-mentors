@@ -1,0 +1,23 @@
+<div class="fixed top-0 right-0 h-full w-[350px] bg-white shadow-lg z-[1000]" 
+    [class]="navBarService.showSidebar() ? 'hidden' : ''">
+  <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+    <h2 class="text-lg font-semibold">Follow Up</h2>
+    <div class="cursor-pointer" (click)="navBarService.closeSidebar()"><span class="material-symbols-outlined">close</span></div>
+  </div>
+  <div class="p-4">
+    <ul>
+      @if(followUpList().length > 0) {
+        @for(post of followUpList(); track post.id) {
+          <li class="mb-2">
+            <a [routerLink]="['/edit-post', post.id]" class="flex flex-col">
+              <span class="text-sm font-medium text-gray-800">{{ post.firstname }} {{ post.lastname }}</span>
+              <span class="text-xs text-red-600">Due: {{ getFollowUpDueDate(post) | date:'dd-MM-yyyy' }}</span>
+            </a>
+          </li>
+        }
+      } @else {
+        <li class="text-gray-500 text-sm">No follow-ups due</li>
+      }
+    </ul>
+  </div>
+</div>
