@@ -1,10 +1,12 @@
 <div class="flex items-center gap-3">
     <a [routerLink]="['/dashboard']"
-        class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"><span class="material-symbols-outlined">dashboard</span> Dashboard
+        class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"><span
+            class="material-symbols-outlined">dashboard</span> Dashboard
     </a>
     <a href="https://spg-accounting.netlify.app/" target="_blank" rel="noopener"
-    class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"><span class="material-symbols-outlined">
-        work
+        class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100  cursor-pointer"><span
+            class="material-symbols-outlined">
+            work
         </span> About SPG
     </a>
     <div class="relative">
@@ -25,9 +27,9 @@
     <a (click)="navBarService.toggleSidebar()"
         class="flex items-center gap-1 rounded-full p-3 hover:border-neutral-300 hover:bg-neutral-100 cursor-pointer relative">
         <span class="material-symbols-outlined">notifications</span>
-         @if(followUpList().length > 0) {
-            <span class="absolute top-3 right-3 h-3 w-3 rounded-full bg-red-500"></span>
+        @if(followUpList().length > 0) {
+        <span class="absolute top-3 right-3 h-3 w-3 rounded-full bg-red-500"></span>
         }
-        
+
     </a>
 </div>
