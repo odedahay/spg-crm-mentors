@@ -82,27 +82,26 @@
                 </span>
               </td>
               <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">
-                @if(isFollowUpDue(mentorPost)){
+                @if(isFollowUpStopped(mentorPost)){
+                  <span
+                    class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-amber-100 text-amber-800 ring-gray-500/10">
+                    Follow-up stop: {{ today | date:'dd-MM-yyyy' }}
+                  </span>
+                }@else if(isFollowUpDue(mentorPost)){
                 <span
                   class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-red-200 text-red-800 ring-gray-500/10">
                   Follow-up needed
                 </span>
                 }@else {
-
-                <span
-                  class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-gray-100 text-gray-600 ring-gray-500/10">
-                  @if(getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) == undefined){
-                  Update the Follow Up Date
-                  }@else {
-                  Due on {{ getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) |
-                  date:'dd-MM-yyyy' }}
-                  }
-
-                </span>
-
-                <!-- <span class="inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-gray-100 text-gray-600 ring-gray-500/10">
-                      Follow-up due on {{ getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) | date:'dd-MM-yyyy' }}
-                    </span> -->
+                  <span
+                    class="uppercase inline-flex items-center justify-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset w-fit bg-gray-100 text-gray-600 ring-gray-500/10">
+                    @if(getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) == undefined){
+                      Set the Follow Up
+                    }@else {
+                      Follow-up Due on {{ getFollowUpDueDate(mentorPost.createdAt, mentorPost.followUpInterval) |
+                      date:'dd-MM-yyyy' }}
+                    }
+                  </span>
                 }
               </td>
               <td class="border border-neutral-100 px-4 py-3 whitespace-nowrap">

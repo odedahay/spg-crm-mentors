@@ -178,9 +178,9 @@ export class EditPostComponent implements OnInit{
       rawValue.followUpInterval
     );
 
-    //alert('Successfully Saved');
-    this.router.navigateByUrl('/dashboard')
-    this.toastr.success('Succesfully saved', 'Success');
+    // Navigate back to dashboard and show success message
+    this.toastr.success('Successfully saved', 'Success');
+    this.router.navigateByUrl('/dashboard');
   }
 
   onDelete(id:string){

@@ -126,17 +126,40 @@ export class MentorpostService {
   //   const mentorPostCollectionRef = collection(this.firestore, 'mentor-post');
   //   return collectionData(mentorPostCollectionRef, { idField: 'id' }) as Observable<MentorPost[]>;
   // }
-   isFollowUpDue(post: MentorPost): boolean {
-    if (!post.createdAt || !post.followUpInterval) return false;
 
-    const createdDate = typeof post.createdAt === 'string'
-      ? new Date(post.createdAt)
-      : (post.createdAt as any).toDate();
+    isFollowUpDue(post: MentorPost): boolean {
+      if (!post.createdAt || post.followUpInterval == null) return false;
+  
+      // Convert to number to handle both string and number types
+      const followUpInterval = Number(post.followUpInterval);
+      
+      if (followUpInterval === -1) {
+        // Follow-up is stopped
+        return false;
+      }
+  
+      const createdDate = new Date(post.createdAt);
+      const now = new Date();
+  
+      // followUpInterval is expected in days
+      const diffInMs = now.getTime() - createdDate.getTime();
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24); // Convert ms to days
+  
+      return diffInDays >= followUpInterval;
+    }
 
-    const now = new Date();
-    const diffInDays = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+  
+  //  isFollowUpDue(post: MentorPost): boolean {
+  //   if (!post.createdAt || !post.followUpInterval) return false;
 
-    return diffInDays >= post.followUpInterval;
-  }
+  //   const createdDate = typeof post.createdAt === 'string'
+  //     ? new Date(post.createdAt)
+  //     : (post.createdAt as any).toDate();
+
+  //   const now = new Date();
+  //   const diffInDays = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+
+  //   return diffInDays >= post.followUpInterval;
+  // }
 
 }

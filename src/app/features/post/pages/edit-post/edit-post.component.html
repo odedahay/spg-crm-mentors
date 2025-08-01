@@ -137,13 +137,14 @@
                         }
                     </div>
                     <div>
-                        <label for="followUpInterval" class="w-full">Follow-up Interval <span class="text-red-500">*</span></label>
+                        <label for="followUpInterval" class="w-full">Follow-up Interval<span class="text-red-500">*</span></label>
                         <select id="followUpInterval" class="bg-neutral-100 w-full px-4 py-2 mt-2"
                             formControlName="followUpInterval">
                             <option value="14">2 Weeks</option>
                             <option value="28">4 Weeks</option>
                             <option value="30">1 Month</option>
                             <option value="60">2 Months</option>
+                            <option [value]="-1">Stop Follow-up</option>
                         </select>
                     </div>
                 </div>

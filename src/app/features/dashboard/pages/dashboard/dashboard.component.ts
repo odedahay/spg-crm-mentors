@@ -1,5 +1,5 @@
-import { Component, inject, computed, signal, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, computed, signal, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { DashboardStatisticsComponent } from "../../components/dashboard-statistics/dashboard-statistics.component";
 import { MentorpostService } from '../../../post/services/mentorpost.service';
@@ -9,6 +9,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import * as XLSX from 'xlsx';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,19 +17,38 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   mentorPostService = inject(MentorpostService);
   toastr = inject(ToastrService);
+  router = inject(Router);
 
-  mentorPosts = toSignal(this.mentorPostService.getMentorPosts());
-  mentorPostsLoading = signal<MentorPost[] | undefined>(undefined);
+  mentorPosts = signal<MentorPost[] | undefined>(undefined);
   searchQuery = signal('');
   currentPage = signal(1);
   itemsPerPage = 10;
+  today = new Date();
+  
+  private routerSubscription?: Subscription;
 
   ngOnInit(): void {
     this.loadMentors();
+    
+    // Subscribe to router events to refresh data when navigating back to dashboard
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        if (event.url === '/dashboard') {
+          // Refresh data when navigating back to dashboard
+          this.loadMentors();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
 
@@ -37,7 +57,7 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     this.mentorPostService.getMentorPosts().subscribe({
       next: (data) =>{
-        this.mentorPostsLoading.set(data);
+        this.mentorPosts.set(data);
         this.loading = false;
       },
       error:()=>{
@@ -198,28 +218,39 @@ export class DashboardComponent implements OnInit {
     this.toastr.success('Successfully download', 'Success');
   }
 
-  isFollowUpDue(post: MentorPost): boolean {
-    if (!post.createdAt || !post.followUpInterval) return false;
+  // isFollowUpDue(post: MentorPost): boolean {
+  //   if (!post.createdAt || post.followUpInterval == null) return false;
 
-    const createdDate = new Date(post.createdAt);
-    const now = new Date();
+  //   // Convert to number to handle both string and number types
+  //   const followUpInterval = Number(post.followUpInterval);
+    
+  //   if (followUpInterval === -1) {
+  //     // Follow-up is stopped
+  //     return false;
+  //   }
 
-    // followUpInterval is expected in days
-    const diffInMs = now.getTime() - createdDate.getTime();
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24); // is used to convert days into milliseconds
+  //   const createdDate = new Date(post.createdAt);
+  //   const now = new Date();
 
-    return diffInDays >= post.followUpInterval;
-  }
+  //   // followUpInterval is expected in days
+  //   const diffInMs = now.getTime() - createdDate.getTime();
+  //   const diffInDays = diffInMs / (1000 * 60 * 60 * 24); // Convert ms to days
 
-  // getFollowUpDueDate(createdAt: string, intervalDays: number): Date {
-  //   const created = new Date(createdAt);
-  //   return new Date(created.getTime() + intervalDays * 24 * 60 * 60 * 1000);
+  //   return diffInDays >= followUpInterval;
   // }
+  isFollowUpDue(post: MentorPost): boolean {
+    return this.mentorPostService.isFollowUpDue(post);
+  }
 
   // converted to Firestore
 
   getFollowUpDueDate(createdAt: string | Timestamp | undefined, intervalDays: number): Date | null {
     if (!createdAt) return null;
+
+    if (intervalDays === -1) {
+      // Follow-up is stopped; return current date as the stop date
+      return new Date();
+    }
 
     let createdDate: Date;
 
@@ -232,6 +263,10 @@ export class DashboardComponent implements OnInit {
     }
 
     return new Date(createdDate.getTime() + intervalDays * 24 * 60 * 60 * 1000);
+  }
+
+  isFollowUpStopped(post: MentorPost): boolean {
+    return Number(post.followUpInterval) === -1;
   }
 
 }
